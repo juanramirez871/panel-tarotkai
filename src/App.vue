@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import NavBar from './shared/components/NavBar.vue';
-import SideBar from './shared/components/SideBar.vue';
 
 </script>
 
 <template>
-  <NavBar />
-  <SideBar />
+  <router-view></router-view>
 </template>
 
 <style scoped>
