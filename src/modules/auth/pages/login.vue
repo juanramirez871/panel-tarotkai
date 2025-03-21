@@ -13,11 +13,12 @@
 					<form id="form-signup" method="post" @submit.prevent>
 						<div class="form-element form-stack">
 							<label for="email" class="form-label">correo</label>
-							<input id="email" type="email" name="email" />
+							<el-input v-model="email" />
 						</div>
 						<div class="form-element form-stack">
 							<label for="password-signup" class="form-label">contraseña</label>
-							<input id="password-signup" type="password" name="password" />
+							<el-input v-model="password" class="input" type="password" placeholder="Contraseña"
+								show-password />
 						</div>
 						<div class="form-element form-submit">
 							<button id="signUp" class="signup" type="submit" name="signup">Iniciar Sesión</button>
@@ -32,11 +33,12 @@
 					<form id="form-login" method="post" @submit.prevent>
 						<div class="form-element form-stack">
 							<label for="username-login" class="form-label">correo</label>
-							<input id="username-login" type="text" name="username" />
+							<el-input v-model="email" placeholder="correo" />
 						</div>
 						<div class="form-element form-stack">
 							<label for="password-login" class="form-label">contraseña</label>
-							<input id="password-login" type="password" name="password" />
+							<el-input v-model="password" class="input" type="password" placeholder="Contraseña"
+								show-password />
 						</div>
 						<div class="form-element form-submit">
 							<button id="logIn" class="login" type="submit" name="login">Crear Cuenta</button>
@@ -50,7 +52,11 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
+
+const password = ref("")
+const email = ref("")
+
 onMounted(() => {
 	function animate(element, properties, duration = 500) {
 		for (let property in properties) {
@@ -259,7 +265,7 @@ label {
 	text-transform: uppercase;
 }
 
-input {
+.input {
 	background-color: transparent;
 	border: 0;
 	outline: 0;
