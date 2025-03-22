@@ -1,5 +1,6 @@
 import Auth from '../../modules/auth/routes'
 import UserList from '../../modules/user/routes'
+import Privileges from '../../modules/privileges/routes'
 
 export default [
 	{
@@ -13,7 +14,8 @@ export default [
 		component: () => import('../pages/home.vue'),
 		meta: { layout: 'base' },
 		children: [
-			...UserList
+			...UserList,
+			...Privileges
 		]
 	},
 	...Auth

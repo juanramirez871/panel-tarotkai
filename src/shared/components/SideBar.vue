@@ -39,8 +39,7 @@
       </template>
       <el-menu-item-group>
         <router-link :to="{ name: 'users' }"><el-menu-item index="4-1">Usuarios</el-menu-item></router-link>
-        <!-- <router-link :to="{ name: 'privileges' }"><el-menu-item index="4-2">Permisos</el-menu-item></router-link> -->
-        <el-menu-item index="4-3">Permisos</el-menu-item>
+        <router-link :to="{ name: 'privileges' }"><el-menu-item index="4-2">Permisos</el-menu-item></router-link>
       </el-menu-item-group>
     </el-sub-menu>
   </el-menu>
