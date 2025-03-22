@@ -1,31 +1,40 @@
 <template>
-  <el-menu
-    default-active="2"
-    class="el-menu-vertical-demo menu"
-    :collapse="isCollapse"
-    @open="handleOpen"
-    @close="handleClose"
-    @mouseenter="openMenu"
-    @mouseleave="closeMenu"
-  >
+  <el-menu default-active="1" class="el-menu-vertical-demo menu" :collapse="isCollapse" @open="handleOpen"
+    @close="handleClose" @mouseenter="openMenu" @mouseleave="closeMenu">
+
+    <el-menu-item>
+      <el-radio-group v-model="isCollapse" style="">
+        <p :value="false">expand</p>
+        <p :value="true">collapse</p>
+      </el-radio-group>
+    </el-menu-item>
+
     <el-menu-item index="1">
-      <el-icon><document /></el-icon>
+      <el-icon>
+        <document />
+      </el-icon>
       <span>Llamadas</span>
     </el-menu-item>
 
     <el-menu-item index="2">
-      <el-icon><document /></el-icon>
+      <el-icon>
+        <document />
+      </el-icon>
       <span>Clientes</span>
     </el-menu-item>
 
     <el-menu-item index="3">
-      <el-icon><document /></el-icon>
+      <el-icon>
+        <document />
+      </el-icon>
       <span>Metricas</span>
     </el-menu-item>
 
     <el-sub-menu index="4">
       <template #title>
-        <el-icon><setting /></el-icon>
+        <el-icon>
+          <setting />
+        </el-icon>
         <span>Configuración</span>
       </template>
       <el-menu-item-group>
@@ -52,10 +61,10 @@ const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
 const openMenu = () => {
-      isCollapse.value = false;
+  if (isCollapse.value) isCollapse.value = false;
 }
 const closeMenu = () => {
-      isCollapse.value = true;
+  if (!isCollapse.value) isCollapse.value = true;
 }
 </script>
 
@@ -64,8 +73,8 @@ const closeMenu = () => {
   width: 200px;
   min-height: 400px;
 }
+
 .menu {
   height: calc(100vh - 60px);
 }
-
 </style>
