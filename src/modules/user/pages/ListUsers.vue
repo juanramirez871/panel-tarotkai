@@ -66,6 +66,32 @@
 			</div>
 		</template>
 	</el-dialog>
+
+	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar Usuario" width="500">
+		<el-form :model="form">
+			<el-form-item label="Nombre" :label-width="formLabelWidth">
+				<el-input v-model="form.name" autocomplete="off" />
+			</el-form-item>
+			<el-form-item label="Rol" :label-width="formLabelWidth">
+				<el-select v-model="form.region">
+					<el-option label="Admin" value="shanghai" />
+					<el-option label="Tarotista" value="beijing" />
+					<el-option label="Central" value="beijing" />
+				</el-select>
+			</el-form-item>
+			<el-form-item label="Extensión" :label-width="formLabelWidth">
+				<el-input v-model="form.name" type="number" autocomplete="off" />
+			</el-form-item>
+		</el-form>
+		<template #footer>
+			<div class="dialog-footer">
+				<el-button @click="dialogFormVisibleEditUser = false">Cancelar</el-button>
+				<el-button type="primary" @click="handleConfirmEditUser">
+					Guardar
+				</el-button>
+			</div>
+		</template>
+	</el-dialog>
 </template>
 
 <script lang="ts" setup>
@@ -85,6 +111,7 @@ interface User {
 const formLabelWidth = '140px'
 const dialogFormVisible = ref(false)
 const centerDialogVisible = ref(false)
+const dialogFormVisibleEditUser = ref(false)
 const search = ref('')
 const form = reactive({
 	name: '',
@@ -105,6 +132,7 @@ const filterTableData = computed(() =>
 )
 const handleEdit = (index: number, row: User) => {
 	console.log(index, row)
+	dialogFormVisibleEditUser.value = true
 }
 const handleDelete = (index: number, row: User) => {
 	console.log(index, row)
@@ -155,6 +183,11 @@ const handleConfirm = () => {
 const handleConfirmCreateUser = () => {
 	alert("Se creo el usuario correctamente")
 	dialogFormVisible.value = false
+}
+
+const handleConfirmEditUser = () => {
+	alert("Se edito el usuario correctamente")
+	dialogFormVisibleEditUser.value = false
 }
 
 const alert = (message) => {
