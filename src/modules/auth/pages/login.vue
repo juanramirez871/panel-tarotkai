@@ -8,6 +8,9 @@
 	<div id="slideBox">
 		<div class="topLayer">
 			<div class="left">
+
+				<h1 class="title">TarotKai</h1>
+
 				<div class="content">
 					<h2>Iniciar Sesión</h2>
 					<form id="form-signup" method="post" @submit.prevent>
@@ -17,8 +20,7 @@
 						</div>
 						<div class="form-element form-stack">
 							<label for="password-signup" class="form-label">contraseña</label>
-							<el-input v-model="password" class="input" type="password" placeholder="Contraseña"
-								show-password />
+							<el-input v-model="password" class="input" type="password" show-password />
 						</div>
 						<div class="form-element form-submit">
 							<button id="signUp" class="signup" type="submit" name="signup">Iniciar Sesión</button>
@@ -28,17 +30,19 @@
 				</div>
 			</div>
 			<div class="right">
+
+				<h1 :style="{ color: colorTitle }" class="title">TarotKai</h1>
+
 				<div class="content">
 					<h2>Crear Cuenta</h2>
 					<form id="form-login" method="post" @submit.prevent>
 						<div class="form-element form-stack">
 							<label for="username-login" class="form-label">correo</label>
-							<el-input v-model="email" placeholder="correo" />
+							<el-input v-model="email" />
 						</div>
 						<div class="form-element form-stack">
 							<label for="password-login" class="form-label">contraseña</label>
-							<el-input v-model="password" class="input" type="password" placeholder="Contraseña"
-								show-password />
+							<el-input v-model="password" class="input" type="password" show-password />
 						</div>
 						<div class="form-element form-submit">
 							<button id="logIn" class="login" type="submit" name="login">Crear Cuenta</button>
@@ -56,6 +60,7 @@ import { onMounted, ref } from 'vue'
 
 const password = ref("")
 const email = ref("")
+const colorTitle = ref("#ffff")
 
 onMounted(() => {
 	function animate(element, properties, duration = 500) {
@@ -69,6 +74,7 @@ onMounted(() => {
 	}
 
 	function goRight() {
+		colorTitle.value = "#ffff"
 		const slideBox = document.getElementById('slideBox')
 		animate(slideBox, { marginLeft: '0' })
 
@@ -82,6 +88,7 @@ onMounted(() => {
 	document.getElementById('goRight').addEventListener('click', goRight)
 
 	document.getElementById('goLeft').addEventListener('click', function () {
+		colorTitle.value = "#50505b !important"
 		const slideBox = document.getElementById('slideBox')
 		if (window.innerWidth > 769) {
 			animate(slideBox, { marginLeft: '50%' })
@@ -182,7 +189,6 @@ onMounted(() => {
 })
 </script>
 
-
 <style lang="scss" scoped>
 $theme-signup: #03A9F4;
 $theme-signup-darken: #0288D1;
@@ -199,6 +205,11 @@ $error: #d9534f;
 
 * {
 	overflow: hidden !important;
+}
+
+.title {
+	text-align: center;
+	margin-top: 5%;
 }
 
 body {
