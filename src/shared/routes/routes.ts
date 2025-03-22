@@ -2,11 +2,11 @@ import Auth from '../../modules/auth/routes'
 import UserList from '../../modules/user/routes'
 
 export default [
-	// {
-	// 	path: '/:pathMatch(.*)',
-	// 	component: () => import('../../modules/auth/pages/404.vue'),
-	// 	meta: { name: 'Not Found' },
-	// },
+	{
+		path: '/:pathMatch(.*)',
+		component: () => import('../pages/NotFound.vue'),
+		meta: { name: 'Not Found' },
+	},
 	{
 		path: '/',
 		name: 'home',
