@@ -1,16 +1,11 @@
 {
-  "compilerOptions": {
-    "noEmit": true, // Evita la emisión de archivos compilados
-    "allowJs": true, // Permite archivos .js en el proyecto
-    "checkJs": false, // Desactiva la comprobación de tipos en archivos .js
-    "strict": false, // Desactiva las reglas estrictas de TypeScript
-    "noImplicitAny": false, // Permite el uso de tipos 'any' sin advertencias
-    "skipLibCheck": true, // Omite la comprobación de tipos en las bibliotecas
-    "noUnusedLocals": false, // Permite variables locales no usadas
-    "noUnusedParameters": false // Permite parámetros no usados
-  },
-  "include": [
-    "src/**/*.js", // Incluye archivos JS en el proyecto
-    "src/**/*.ts" // Sigue permitiendo archivos TS, pero sin reglas estrictas
-  ]
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
 }

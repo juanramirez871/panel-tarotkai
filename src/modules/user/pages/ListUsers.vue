@@ -1,6 +1,12 @@
 <template>
 	<h1>Lista de Usuarios</h1>
 	<br />
+	<el-button type="primary" plain @click="dialogFormVisible = true">
+		Crear Usuario &nbsp;&nbsp;
+		<el-icon>
+			<UserFilled />
+		</el-icon>
+	</el-button>
 	<el-table :data="filterTableData" style="width: 100%">
 		<el-table-column label="Id" prop="id" />
 		<el-table-column label="Fecha de Creacion" prop="createdAt" />
@@ -34,11 +40,37 @@
 			</div>
 		</template>
 	</el-dialog>
+
+	<el-dialog v-model="dialogFormVisible" title="Crear Usuario" width="500">
+		<el-form :model="form">
+			<el-form-item label="Nombre" :label-width="formLabelWidth">
+				<el-input v-model="form.name" autocomplete="off" />
+			</el-form-item>
+			<el-form-item label="Rol" :label-width="formLabelWidth">
+				<el-select v-model="form.region">
+					<el-option label="Admin" value="shanghai" />
+					<el-option label="Tarotista" value="beijing" />
+					<el-option label="Central" value="beijing" />
+				</el-select>
+			</el-form-item>
+			<el-form-item label="Extensión" :label-width="formLabelWidth">
+				<el-input v-model="form.name" type="number" autocomplete="off" />
+			</el-form-item>
+		</el-form>
+		<template #footer>
+			<div class="dialog-footer">
+				<el-button @click="dialogFormVisible = false">Cancelar</el-button>
+				<el-button type="primary" @click="handleConfirmCreateUser">
+					Crear
+				</el-button>
+			</div>
+		</template>
+	</el-dialog>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
-import { Search } from '@element-plus/icons-vue'
+import { computed, ref, reactive } from 'vue'
+import { Search, UserFilled } from '@element-plus/icons-vue'
 import { ElNotification } from 'element-plus'
 
 interface User {
@@ -50,8 +82,20 @@ interface User {
 	rol: string
 }
 
+const formLabelWidth = '140px'
+const dialogFormVisible = ref(false)
 const centerDialogVisible = ref(false)
 const search = ref('')
+const form = reactive({
+	name: '',
+	region: '',
+	date1: '',
+	date2: '',
+	delivery: false,
+	type: [],
+	resource: '',
+	desc: '',
+})
 const filterTableData = computed(() =>
 	tableData.filter(
 		(data) =>
@@ -104,14 +148,19 @@ const tableData: User[] = [
 
 
 const handleConfirm = () => {
-	open()
+	alert("Se elimino correctamente el usuario")
 	centerDialogVisible.value = false
 }
 
-const open = () => {
+const handleConfirmCreateUser = () => {
+	alert("Se creo el usuario correctamente")
+	dialogFormVisible.value = false
+}
+
+const alert = (message) => {
 	ElNotification.success({
 		title: 'Exitosamente',
-		message: 'Se elimino correctamente el usuario',
+		message: message,
 		offset: 10,
 	})
 }
