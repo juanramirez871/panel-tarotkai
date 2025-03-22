@@ -234,6 +234,10 @@ input {
 	left: -100%;
 }
 
+* {
+	font-family: "Concert One", sans-serif !important;
+}
+
 label {
 	text-transform: uppercase;
 }

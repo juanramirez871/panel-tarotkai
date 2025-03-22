@@ -1,4 +1,5 @@
 import Auth from '../../modules/auth/routes'
+import UserList from '../../modules/user/routes'
 
 export default [
 	// {
@@ -11,6 +12,9 @@ export default [
 		name: 'home',
 		component: () => import('../pages/home.vue'),
 		meta: { layout: 'base' },
+		children: [
+			...UserList
+		]
 	},
 	...Auth
 ];

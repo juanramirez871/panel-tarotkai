@@ -7,9 +7,16 @@ import SideBar from '../components/SideBar.vue';
 
 <template>
   <NavBar />
-  <SideBar />
+  <div class="content">
+    <SideBar />
+    <div style="margin-left: 80px; margin-top: 20px;">
+      <router-view></router-view>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-
+.content {
+  display: flex;
+}
 </style>

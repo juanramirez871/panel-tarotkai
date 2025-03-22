@@ -38,8 +38,8 @@
         <span>Configuración</span>
       </template>
       <el-menu-item-group>
-        <el-menu-item index="4-1">Tarifas</el-menu-item>
-        <el-menu-item index="4-2">Bonos</el-menu-item>
+        <router-link :to="{ name: 'users' }"><el-menu-item index="4-1">Usuarios</el-menu-item></router-link>
+        <el-menu-item index="4-2">Crear Usuario</el-menu-item>
         <el-menu-item index="4-3">Permisos</el-menu-item>
       </el-menu-item-group>
     </el-sub-menu>
@@ -76,5 +76,6 @@ const closeMenu = () => {
 
 .menu {
   height: calc(100vh - 60px);
+  position: absolute;
 }
 </style>
