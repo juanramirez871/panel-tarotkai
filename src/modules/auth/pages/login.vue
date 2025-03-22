@@ -16,7 +16,7 @@
 					<form id="form-signup" method="post" @submit.prevent>
 						<div class="form-element form-stack">
 							<label for="email" class="form-label">correo</label>
-							<el-input v-model="email" />
+							<el-input class="input" v-model="email" />
 						</div>
 						<div class="form-element form-stack">
 							<label for="password-signup" class="form-label">contraseña</label>
@@ -24,29 +24,6 @@
 						</div>
 						<div class="form-element form-submit">
 							<button id="signUp" class="signup" type="submit" name="signup">Iniciar Sesión</button>
-							<button id="goLeft" class="signup off" type="button">Crear Cuenta</button>
-						</div>
-					</form>
-				</div>
-			</div>
-			<div class="right">
-
-				<h1 :style="{ color: colorTitle }" class="title">TarotKai</h1>
-
-				<div class="content">
-					<h2>Crear Cuenta</h2>
-					<form id="form-login" method="post" @submit.prevent>
-						<div class="form-element form-stack">
-							<label for="username-login" class="form-label">correo</label>
-							<el-input v-model="email" />
-						</div>
-						<div class="form-element form-stack">
-							<label for="password-login" class="form-label">contraseña</label>
-							<el-input v-model="password" class="input" type="password" show-password />
-						</div>
-						<div class="form-element form-submit">
-							<button id="logIn" class="login" type="submit" name="login">Crear Cuenta</button>
-							<button id="goRight" class="login off" type="button">Iniciar Sesión</button>
 						</div>
 					</form>
 				</div>
@@ -60,7 +37,6 @@ import { onMounted, ref } from 'vue'
 
 const password = ref("")
 const email = ref("")
-const colorTitle = ref("#ffff")
 
 onMounted(() => {
 	function animate(element, properties, duration = 500) {
@@ -74,7 +50,6 @@ onMounted(() => {
 	}
 
 	function goRight() {
-		colorTitle.value = "#ffff"
 		const slideBox = document.getElementById('slideBox')
 		animate(slideBox, { marginLeft: '0' })
 
@@ -85,23 +60,6 @@ onMounted(() => {
 	}
 
 	goRight()
-	document.getElementById('goRight').addEventListener('click', goRight)
-
-	document.getElementById('goLeft').addEventListener('click', function () {
-		colorTitle.value = "#50505b !important"
-		const slideBox = document.getElementById('slideBox')
-		if (window.innerWidth > 769) {
-			animate(slideBox, { marginLeft: '50%' })
-		} else {
-			animate(slideBox, { marginLeft: '20%' })
-		}
-
-		const topLayers = document.querySelectorAll('.topLayer')
-		topLayers.forEach(function (layer) {
-			animate(layer, { marginLeft: '0' })
-		})
-	})
-
 	paper.install(window)
 	paper.setup(document.getElementById('canvas'))
 
@@ -221,6 +179,11 @@ body {
 	font-family: $font-default;
 }
 
+label,
+input {
+	font-size: 20px !important;
+}
+
 .backRight {
 	position: absolute;
 	right: 0;
@@ -272,7 +235,6 @@ body {
 }
 
 label {
-	font-size: 0.8em;
 	text-transform: uppercase;
 }
 
@@ -283,6 +245,7 @@ label {
 	font-size: 1em;
 	padding: 8px 1px;
 	margin-top: 0.1em;
+	font-size: 20px !important;
 }
 
 .left {
