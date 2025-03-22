@@ -249,6 +249,10 @@
     background: #111;
 }
 
+* {
+    color: #fff9de;
+}
+
 .house__house:after {
     content: '';
     background: #fff9de;

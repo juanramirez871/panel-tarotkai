@@ -9,7 +9,7 @@ import SideBar from '../components/SideBar.vue';
   <NavBar />
   <div class="content">
     <SideBar />
-    <div style="margin-left: 80px; margin-top: 20px;">
+    <div class="content-view">
       <router-view></router-view>
     </div>
   </div>
@@ -18,5 +18,11 @@ import SideBar from '../components/SideBar.vue';
 <style scoped>
 .content {
   display: flex;
+}
+
+.content-view {
+  margin-left: 80px;
+  margin-top: 20px;
+  width: 94%;
 }
 </style>

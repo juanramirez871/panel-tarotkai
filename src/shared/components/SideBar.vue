@@ -77,5 +77,6 @@ const closeMenu = () => {
 .menu {
   height: calc(100vh - 60px);
   position: absolute;
+  z-index: 1000;
 }
 </style>

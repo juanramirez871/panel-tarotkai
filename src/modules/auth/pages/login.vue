@@ -168,6 +168,7 @@ $error: #d9534f;
 .title {
 	text-align: center;
 	margin-top: 5%;
+	color: #f9f9f9;
 }
 
 body {
