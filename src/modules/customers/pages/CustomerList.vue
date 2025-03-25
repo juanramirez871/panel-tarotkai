@@ -9,10 +9,11 @@
 	</el-button>
 	<el-table :data="filterTableData" style="width: 100%">
 		<el-table-column label="Id" prop="id" />
-		<el-table-column label="Fecha de Creacion" prop="createdAt" />
 		<el-table-column label="Nombre" prop="name" />
-		<el-table-column label="Extensión" prop="extencion" />
-		<el-table-column label="Rol" prop="rol" />
+		<el-table-column label="Identificacion" prop="extencion" />
+		<el-table-column label="llamadas" prop="rol" />
+		<el-table-column label="Pais" prop="address" />
+		<el-table-column label="Ciudad" prop="createdAt" />
 		<el-table-column align="right">
 			<template #header>
 				<el-input v-model="search" style="width: 240px" size="large" placeholder="Buscar..."
@@ -30,7 +31,7 @@
 	</el-table>
 
 	<el-dialog v-model="centerDialogVisible" title="Advertencia" width="500" align-center>
-		<span>¿Deseas eliminar el usuario? esta accion no se puede devolver</span>
+		<span>¿Deseas eliminar el Cliente? esta accion no se puede devolver</span>
 		<template #footer>
 			<div class="dialog-footer">
 				<el-button @click="centerDialogVisible = false">Cancelar</el-button>
@@ -41,20 +42,22 @@
 		</template>
 	</el-dialog>
 
-	<el-dialog v-model="dialogFormVisible" title="Crear Usuario" width="500">
+	<el-dialog v-model="dialogFormVisible" title="Crear Cliente" width="500">
 		<el-form :model="form">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
 				<el-input v-model="form.name" autocomplete="off" />
 			</el-form-item>
-			<el-form-item label="Rol" :label-width="formLabelWidth">
-				<el-select v-model="form.region">
-					<el-option label="Admin" value="shanghai" />
-					<el-option label="Tarotista" value="beijing" />
-					<el-option label="Central" value="beijing" />
-				</el-select>
-			</el-form-item>
-			<el-form-item label="Extensión" :label-width="formLabelWidth">
+			<el-form-item label="Identificacion" :label-width="formLabelWidth">
 				<el-input v-model="form.name" type="number" autocomplete="off" />
+			</el-form-item>
+			<el-form-item label="Pais" :label-width="formLabelWidth">
+				<el-input v-model="form.name" type="text" autocomplete="off" />
+			</el-form-item>
+			<el-form-item label="Ciudad" :label-width="formLabelWidth">
+				<el-input v-model="form.name" type="text" autocomplete="off" />
+			</el-form-item>
+			<el-form-item label="¿Cliente Nuevo?" :label-width="formLabelWidth">
+				<el-switch v-model="value2" class="ml-2" />
 			</el-form-item>
 		</el-form>
 		<template #footer>
@@ -67,20 +70,22 @@
 		</template>
 	</el-dialog>
 
-	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar Usuario" width="500">
+	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar cliente" width="500">
 		<el-form :model="form">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
 				<el-input v-model="form.name" autocomplete="off" />
 			</el-form-item>
-			<el-form-item label="Rol" :label-width="formLabelWidth">
-				<el-select v-model="form.region">
-					<el-option label="Admin" value="shanghai" />
-					<el-option label="Tarotista" value="beijing" />
-					<el-option label="Central" value="beijing" />
-				</el-select>
-			</el-form-item>
-			<el-form-item label="Extensión" :label-width="formLabelWidth">
+			<el-form-item label="Identificacion" :label-width="formLabelWidth">
 				<el-input v-model="form.name" type="number" autocomplete="off" />
+			</el-form-item>
+			<el-form-item label="Pais" :label-width="formLabelWidth">
+				<el-input v-model="form.name" type="text" autocomplete="off" />
+			</el-form-item>
+			<el-form-item label="Ciudad" :label-width="formLabelWidth">
+				<el-input v-model="form.name" type="text" autocomplete="off" />
+			</el-form-item>
+			<el-form-item label="¿Cliente Nuevo?" :label-width="formLabelWidth">
+				<el-switch v-model="value2" class="ml-2" />
 			</el-form-item>
 		</el-form>
 		<template #footer>
@@ -111,6 +116,7 @@ interface User {
 const formLabelWidth = '140px'
 const dialogFormVisible = ref(false)
 const centerDialogVisible = ref(false)
+const value2 = ref(true)
 const dialogFormVisibleEditUser = ref(false)
 const search = ref('')
 const form = reactive({
@@ -141,52 +147,52 @@ const handleDelete = (index: number, row: User) => {
 
 const tableData: User[] = [
 	{
-		createdAt: '2016-05-03',
+		createdAt: 'San Juan',
 		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
-		extencion: "100",
-		rol: "Admin",
+		address: 'Puerto Rico',
+		extencion: "1096065071",
+		rol: "84",
 		id: 1
 	},
 	{
-		createdAt: '2016-05-02',
+		createdAt: 'San Juan',
 		name: 'John',
-		address: 'No. 189, Grove St, Los Angeles',
-		extencion: "100",
-		rol: "Admin",
+		address: 'Puerto Rico',
+		extencion: "1096065071",
+		rol: "84",
 		id: 1
 	},
 	{
-		createdAt: '2016-05-04',
+		createdAt: 'San Juan',
 		name: 'Morgan',
-		address: 'No. 189, Grove St, Los Angeles',
-		extencion: "100",
-		rol: "Admin",
+		address: 'Puerto Rico',
+		extencion: "1096065071",
+		rol: "84",
 		id: 1
 	},
 	{
-		createdAt: '2016-05-01',
+		createdAt: 'San Juan',
 		name: 'Jessy',
-		address: 'No. 189, Grove St, Los Angeles',
-		extencion: "100",
-		rol: "Admin",
+		address: 'Puerto Rico',
+		extencion: "1096065071",
+		rol: "84",
 		id: 1
 	},
 ]
 
 
 const handleConfirm = () => {
-	alert("Se elimino correctamente el usuario")
+	alert("Se elimino correctamente el cliente")
 	centerDialogVisible.value = false
 }
 
 const handleConfirmCreateUser = () => {
-	alert("Se creo el usuario correctamente")
+	alert("Se creo el cliente correctamente")
 	dialogFormVisible.value = false
 }
 
 const handleConfirmEditUser = () => {
-	alert("Se edito el usuario correctamente")
+	alert("Se edito el cliente correctamente")
 	dialogFormVisibleEditUser.value = false
 }
 
