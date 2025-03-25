@@ -2,6 +2,7 @@ import Auth from '../../modules/auth/routes'
 import UserList from '../../modules/user/routes'
 import Privileges from '../../modules/privileges/routes'
 import Calls from '../../modules/calls/routes'
+import Customers from '../../modules/customers/routes'
 
 export default [
 	{
@@ -17,7 +18,8 @@ export default [
 		children: [
 			...UserList,
 			...Privileges,
-			...Calls
+			...Calls,
+			...Customers
 		]
 	},
 	...Auth

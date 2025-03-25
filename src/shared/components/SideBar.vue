@@ -11,21 +11,23 @@
 
     <el-menu-item index="1">
       <el-icon>
-        <document />
+        <Phone />
       </el-icon>
       <span>Llamadas</span>
     </el-menu-item>
 
     <el-menu-item index="2">
-      <el-icon>
-        <document />
-      </el-icon>
-      <span>Clientes</span>
+      <router-link :to="{ name: 'customers' }">
+        <el-icon>
+          <User style="color: black;" />
+        </el-icon>
+        <span :style="{ display: showContentMenu }">Clientes</span>
+      </router-link>
     </el-menu-item>
 
     <el-menu-item index="3">
       <el-icon>
-        <document />
+        <DataAnalysis />
       </el-icon>
       <span>Metricas</span>
     </el-menu-item>
@@ -49,12 +51,15 @@
 
 <script lang="ts" setup>
 import {
-  Document,
+  DataAnalysis,
   Setting,
+  User,
+  Phone
 } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 
 const isCollapse = ref(true)
+const showContentMenu = ref('none')
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
@@ -62,9 +67,11 @@ const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
 const openMenu = () => {
+  showContentMenu.value = 'contents'
   if (isCollapse.value) isCollapse.value = false;
 }
 const closeMenu = () => {
+  showContentMenu.value = 'none'
   if (!isCollapse.value) isCollapse.value = true;
 }
 </script>
@@ -73,6 +80,11 @@ const closeMenu = () => {
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
+}
+
+a:visited {
+  color: inherit;
+  text-decoration: none;
 }
 
 .menu {
