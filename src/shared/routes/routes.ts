@@ -1,6 +1,7 @@
 import Auth from '../../modules/auth/routes'
 import UserList from '../../modules/user/routes'
 import Privileges from '../../modules/privileges/routes'
+import Calls from '../../modules/calls/routes'
 
 export default [
 	{
@@ -15,7 +16,8 @@ export default [
 		meta: { layout: 'base' },
 		children: [
 			...UserList,
-			...Privileges
+			...Privileges,
+			...Calls
 		]
 	},
 	...Auth
