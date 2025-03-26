@@ -28,13 +28,33 @@
     </el-menu-item>
 
     <el-menu-item index="3">
-      <el-icon>
-        <DataAnalysis />
-      </el-icon>
-      <span>Metricas</span>
+      <router-link :to="{ name: 'metrics' }">
+        <el-icon>
+          <Histogram style="color: black;" />
+        </el-icon>
+        <span :style="{ display: showContentMenu }">Metricas</span>
+      </router-link>
     </el-menu-item>
 
-    <el-sub-menu index="4">
+    <el-menu-item index="4">
+      <router-link :to="{ name: 'reservations' }">
+        <el-icon>
+          <MessageBox style="color: black;" />
+        </el-icon>
+        <span :style="{ display: showContentMenu }">Reservas</span>
+      </router-link>
+    </el-menu-item>
+
+    <el-menu-item index="5">
+      <router-link :to="{ name: 'goals' }">
+        <el-icon>
+          <Star style="color: black;" />
+        </el-icon>
+        <span :style="{ display: showContentMenu }">Metas</span>
+      </router-link>
+    </el-menu-item>
+
+    <el-sub-menu index="6">
       <template #title>
         <el-icon>
           <setting />
@@ -42,9 +62,9 @@
         <span>Configuración</span>
       </template>
       <el-menu-item-group>
-        <router-link :to="{ name: 'users' }"><el-menu-item index="4-1">Usuarios</el-menu-item></router-link>
-        <router-link :to="{ name: 'privileges' }"><el-menu-item index="4-2">Permisos</el-menu-item></router-link>
-        <router-link :to="{ name: 'type-calls' }"><el-menu-item index="4-3">Tipo de
+        <router-link :to="{ name: 'users' }"><el-menu-item index="6-1">Usuarios</el-menu-item></router-link>
+        <router-link :to="{ name: 'privileges' }"><el-menu-item index="6-2">Permisos</el-menu-item></router-link>
+        <router-link :to="{ name: 'type-calls' }"><el-menu-item index="6-3">Tipo de
             llamadas</el-menu-item></router-link>
       </el-menu-item-group>
     </el-sub-menu>
@@ -53,10 +73,12 @@
 
 <script lang="ts" setup>
 import {
-  DataAnalysis,
   Setting,
   User,
-  Phone
+  Phone,
+  MessageBox,
+  Star,
+  Histogram
 } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 

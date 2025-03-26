@@ -3,6 +3,9 @@ import UserList from '../../modules/user/routes'
 import Privileges from '../../modules/privileges/routes'
 import Calls from '../../modules/calls/routes'
 import Customers from '../../modules/customers/routes'
+import Goals from '../../modules/goals/routes'
+import Reservations from '../../modules/reservation/routes'
+import Metrics from '../../modules/metrics/routes'
 
 export default [
 	{
@@ -19,7 +22,10 @@ export default [
 			...UserList,
 			...Privileges,
 			...Calls,
-			...Customers
+			...Customers,
+			...Goals,
+			...Reservations,
+			...Metrics
 		]
 	},
 	...Auth
