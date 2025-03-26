@@ -14,6 +14,7 @@
 		<el-table-column label="llamadas" prop="rol" />
 		<el-table-column label="Pais" prop="address" />
 		<el-table-column label="Ciudad" prop="createdAt" />
+		<el-table-column label="Ultima Llamada" prop="lastestCall" />
 		<el-table-column align="right">
 			<template #header>
 				<el-input v-model="search" style="width: 240px" size="large" placeholder="Buscar..."
@@ -104,15 +105,6 @@ import { computed, ref, reactive } from 'vue'
 import { Search, UserFilled } from '@element-plus/icons-vue'
 import { ElNotification } from 'element-plus'
 
-interface User {
-	id: number
-	createdAt: string
-	name: string
-	address: string
-	extencion: string
-	rol: string
-}
-
 const formLabelWidth = '140px'
 const dialogFormVisible = ref(false)
 const centerDialogVisible = ref(false)
@@ -136,23 +128,24 @@ const filterTableData = computed(() =>
 			data.name.toLowerCase().includes(search.value.toLowerCase())
 	)
 )
-const handleEdit = (index: number, row: User) => {
+const handleEdit = (index: number, row) => {
 	console.log(index, row)
 	dialogFormVisibleEditUser.value = true
 }
-const handleDelete = (index: number, row: User) => {
+const handleDelete = (index: number, row) => {
 	console.log(index, row)
 	centerDialogVisible.value = true
 }
 
-const tableData: User[] = [
+const tableData = [
 	{
 		createdAt: 'San Juan',
 		name: 'Tom',
 		address: 'Puerto Rico',
 		extencion: "1096065071",
 		rol: "84",
-		id: 1
+		id: 1,
+		lastestCall: "02-03-2025"
 	},
 	{
 		createdAt: 'San Juan',
@@ -160,7 +153,8 @@ const tableData: User[] = [
 		address: 'Puerto Rico',
 		extencion: "1096065071",
 		rol: "84",
-		id: 1
+		id: 1,
+		lastestCall: "02-03-2025"
 	},
 	{
 		createdAt: 'San Juan',
@@ -168,7 +162,8 @@ const tableData: User[] = [
 		address: 'Puerto Rico',
 		extencion: "1096065071",
 		rol: "84",
-		id: 1
+		id: 1,
+		lastestCall: "02-03-2025"
 	},
 	{
 		createdAt: 'San Juan',
@@ -176,7 +171,8 @@ const tableData: User[] = [
 		address: 'Puerto Rico',
 		extencion: "1096065071",
 		rol: "84",
-		id: 1
+		id: 1,
+		lastestCall: "02-03-2025"
 	},
 ]
 

@@ -10,10 +10,12 @@
     </el-menu-item>
 
     <el-menu-item index="1">
-      <el-icon>
-        <Phone />
-      </el-icon>
-      <span>Llamadas</span>
+      <router-link :to="{ name: 'calls' }">
+        <el-icon>
+          <Phone style="color: black;" />
+        </el-icon>
+        <span :style="{ display: showContentMenu }">Llamadas</span>
+      </router-link>
     </el-menu-item>
 
     <el-menu-item index="2">
