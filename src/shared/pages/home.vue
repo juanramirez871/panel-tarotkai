@@ -18,6 +18,7 @@ import SideBar from '../components/SideBar.vue';
 <style scoped>
 .content {
   display: flex;
+  position: relative;
 }
 
 .content-view {

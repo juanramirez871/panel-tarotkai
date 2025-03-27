@@ -9,50 +9,50 @@
       </el-radio-group>
     </el-menu-item>
 
-    <el-menu-item index="1">
-      <router-link :to="{ name: 'calls' }">
+    <router-link :to="{ name: 'calls' }">
+      <el-menu-item index="1">
         <el-icon>
           <Phone style="color: black;" />
         </el-icon>
         <span :style="{ display: showContentMenu }">Llamadas</span>
-      </router-link>
-    </el-menu-item>
+      </el-menu-item>
+    </router-link>
 
-    <el-menu-item index="2">
-      <router-link :to="{ name: 'customers' }">
+    <router-link :to="{ name: 'customers' }">
+      <el-menu-item index="2">
         <el-icon>
           <User style="color: black;" />
         </el-icon>
         <span :style="{ display: showContentMenu }">Clientes</span>
-      </router-link>
-    </el-menu-item>
+      </el-menu-item>
+    </router-link>
 
-    <el-menu-item index="3">
-      <router-link :to="{ name: 'metrics' }">
-        <el-icon>
-          <Histogram style="color: black;" />
-        </el-icon>
-        <span :style="{ display: showContentMenu }">Metricas</span>
-      </router-link>
-    </el-menu-item>
-
-    <el-menu-item index="4">
-      <router-link :to="{ name: 'reservations' }">
+    <router-link :to="{ name: 'reservations' }">
+      <el-menu-item index="3">
         <el-icon>
           <MessageBox style="color: black;" />
         </el-icon>
         <span :style="{ display: showContentMenu }">Reservas</span>
-      </router-link>
-    </el-menu-item>
+      </el-menu-item>
+    </router-link>
 
-    <el-menu-item index="5">
-      <router-link :to="{ name: 'goals' }">
+    <router-link :to="{ name: 'metrics' }">
+      <el-menu-item index="4">
+        <el-icon>
+          <Histogram style="color: black;" />
+        </el-icon>
+        <span :style="{ display: showContentMenu }">Metricas</span>
+      </el-menu-item>
+    </router-link>
+
+    <router-link :to="{ name: 'goals' }">
+      <el-menu-item index="5">
         <el-icon>
           <Star style="color: black;" />
         </el-icon>
         <span :style="{ display: showContentMenu }">Metas</span>
-      </router-link>
-    </el-menu-item>
+      </el-menu-item>
+    </router-link>
 
     <el-sub-menu index="6">
       <template #title>
@@ -112,7 +112,7 @@ a:visited {
 }
 
 .menu {
-  height: calc(100vh - 60px);
+  height: 100%;
   position: absolute;
   z-index: 1000;
 }
