@@ -19,6 +19,8 @@ import SideBar from '../components/SideBar.vue';
 .content {
   display: flex;
   position: relative;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 .content-view {
