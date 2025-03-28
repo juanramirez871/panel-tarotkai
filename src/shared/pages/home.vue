@@ -24,8 +24,9 @@ import SideBar from '../components/SideBar.vue';
 }
 
 .content-view {
-  margin-left: 80px;
+  margin-left: 20px;
+  margin-right: 20px;
   margin-top: 20px;
-  width: 94%;
+  width: 100%;
 }
 </style>

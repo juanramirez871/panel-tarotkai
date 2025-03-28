@@ -29,7 +29,7 @@
 		</el-table-column>
 	</el-table>
 
-	<el-dialog v-model="centerDialogVisible" title="Advertencia" width="500" align-center>
+	<el-dialog v-model="centerDialogVisible" title="Advertencia" width="800" align-center>
 		<span>¿Deseas eliminar el usuario? esta accion no se puede devolver</span>
 		<template #footer>
 			<div class="dialog-footer">
@@ -41,7 +41,7 @@
 		</template>
 	</el-dialog>
 
-	<el-dialog v-model="dialogFormVisible" title="Crear Usuario" width="500">
+	<el-dialog v-model="dialogFormVisible" title="Crear Usuario" width="800">
 		<el-form :model="form">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
 				<el-input v-model="form.name" autocomplete="off" />
@@ -67,7 +67,7 @@
 		</template>
 	</el-dialog>
 
-	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar Usuario" width="500">
+	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar Usuario" width="800">
 		<el-form :model="form">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
 				<el-input v-model="form.name" autocomplete="off" />

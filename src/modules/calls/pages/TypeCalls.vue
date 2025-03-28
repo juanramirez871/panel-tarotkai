@@ -36,7 +36,7 @@
 		</el-table-column>
 	</el-table>
 
-	<el-dialog v-model="centerDialogVisible" title="Advertencia" width="500" align-center>
+	<el-dialog v-model="centerDialogVisible" title="Advertencia" width="800" align-center>
 		<span>¿Deseas eliminar el tipo de llamada? esta accion no se puede devolver</span>
 		<template #footer>
 			<div class="dialog-footer">
@@ -48,7 +48,7 @@
 		</template>
 	</el-dialog>
 
-	<el-dialog v-model="dialogFormVisible" title="Crear Tipo de Llamada" width="500">
+	<el-dialog v-model="dialogFormVisible" title="Crear Tipo de Llamada" width="800">
 		<el-form :model="form">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
 				<el-input v-model="form.name" autocomplete="off" />
@@ -75,7 +75,7 @@
 		</template>
 	</el-dialog>
 
-	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar Tipo de Llamada" width="500">
+	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar Tipo de Llamada" width="800">
 		<el-form :model="form">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
 				<el-input v-model="form.name" autocomplete="off" />

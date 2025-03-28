@@ -1,6 +1,6 @@
 <template>
   <el-menu default-active="1" class="el-menu-vertical-demo menu" :collapse="isCollapse" @open="handleOpen"
-    @close="handleClose" @mouseenter="openMenu" @mouseleave="closeMenu">
+    @close="handleClose">
 
     <el-menu-item>
       <el-radio-group v-model="isCollapse" style="">
@@ -14,7 +14,7 @@
         <el-icon>
           <Phone style="color: black;" />
         </el-icon>
-        <span :style="{ display: showContentMenu }">Llamadas</span>
+        <span>Llamadas</span>
       </el-menu-item>
     </router-link>
 
@@ -23,7 +23,7 @@
         <el-icon>
           <User style="color: black;" />
         </el-icon>
-        <span :style="{ display: showContentMenu }">Clientes</span>
+        <span>Clientes</span>
       </el-menu-item>
     </router-link>
 
@@ -32,7 +32,7 @@
         <el-icon>
           <MessageBox style="color: black;" />
         </el-icon>
-        <span :style="{ display: showContentMenu }">Reservas</span>
+        <span>Reservas</span>
       </el-menu-item>
     </router-link>
 
@@ -41,7 +41,7 @@
         <el-icon>
           <Histogram style="color: black;" />
         </el-icon>
-        <span :style="{ display: showContentMenu }">Metricas</span>
+        <span>Metricas</span>
       </el-menu-item>
     </router-link>
 
@@ -50,7 +50,7 @@
         <el-icon>
           <Star style="color: black;" />
         </el-icon>
-        <span :style="{ display: showContentMenu }">Metas</span>
+        <span>Metas</span>
       </el-menu-item>
     </router-link>
 
@@ -82,22 +82,14 @@ import {
 } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 
-const isCollapse = ref(true)
-const showContentMenu = ref('none')
+const isCollapse = ref(false)
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
 const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
-const openMenu = () => {
-  showContentMenu.value = 'contents'
-  if (isCollapse.value) isCollapse.value = false;
-}
-const closeMenu = () => {
-  showContentMenu.value = 'none'
-  if (!isCollapse.value) isCollapse.value = true;
-}
+
 </script>
 
 <style scoped>
@@ -112,8 +104,7 @@ a:visited {
 }
 
 .menu {
-  height: 100%;
-  position: absolute;
+  min-height: 100vh;
   z-index: 1000;
 }
 </style>
