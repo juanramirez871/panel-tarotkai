@@ -2,11 +2,50 @@
 	<h1>Reportes</h1>
 	<br />
 
+	<div style="display: flex; gap: 20px; flex-wrap: wrap;">
+		<el-select size="large" v-model="value" multiple filterable allow-create default-first-option
+			:reserve-keyword="false" placeholder="Elije los centrales" style="width: 240px">
+			<el-option v-for="item, i in ['luffy', 'roronoa', 'choper']" :key="i" :label="item" :value="i" />
+		</el-select>
+
+		<el-select size="large" v-model="value" multiple filterable allow-create default-first-option
+			:reserve-keyword="false" placeholder="Elije los tarotistas" style="width: 240px">
+			<el-option v-for="item, i in ['luffy', 'roronoa', 'choper']" :key="i" :label="item" :value="i" />
+		</el-select>
+
+		<el-select size="large" v-model="value" multiple filterable allow-create default-first-option
+			:reserve-keyword="false" placeholder="Elije los medios de pago" style="width: 240px">
+			<el-option v-for="item, i in ['luffy', 'roronoa', 'choper']" :key="i" :label="item" :value="i" />
+		</el-select>
+
+		<el-select size="large" v-model="value" multiple filterable allow-create default-first-option
+			:reserve-keyword="false" placeholder="Estado de consulta" style="width: 240px">
+			<el-option v-for="item, i in ['luffy', 'roronoa', 'choper']" :key="i" :label="item" :value="i" />
+		</el-select>
+
+		<el-input v-model="value" type="number" style="width: 240px" placeholder="Numero id" />
+
+		<el-date-picker style="width: 240px !important" v-model="value" type="daterange" unlink-panels
+			range-separator="A" start-placeholder="Fecha inicial" end-placeholder="Fecha Final" size="large" />
+	</div>
+
+	<br />
+
+	<el-button type="primary" size="large">
+		Descargar Excel<el-icon class="el-icon--right">
+			<img width="25px" style="padding-left: 10px;" src="https://cdn-icons-png.flaticon.com/512/732/732220.png"
+				alt="">
+		</el-icon>
+	</el-button>
+
+
+	<br />
+	<br />
+
 	<div style="width: 100%; overflow-x: hidden;">
 		<el-table style="width: 100%" :data="tableData" :fit="true" flexible :header-cell-style="{
 			backgroundColor: '#89b3fd1c',
-			color: '#333',
-			fontWeight: 'bold',
+			color: '#303133c9',
 			textAlign: 'center'
 		}" :cell-style="{
 			textAlign: 'center'
@@ -33,6 +72,8 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 const tableData = [
 	{
 		id: 1,
@@ -95,5 +136,5 @@ const tableData = [
 		medioPago: "Transferencia bancaria"
 	}
 ];
-
+const value = ref()
 </script>

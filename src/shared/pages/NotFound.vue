@@ -10,7 +10,8 @@
                 404 Not Found
             </h1>
             <p>No se encontro la ruta que estas buscando</p>
-            <router-link :to="{ name: 'home' }"><el-button type="primary">Ir al inicio</el-button></router-link>
+            <router-link :to="{ name: 'home' }"><el-button type="primary" size="large">Ir al
+                    inicio</el-button></router-link>
         </div>
         <div class="geminid" style="--angle: 53; --speed: 12; --delay: 15; --x: 72; --y: 19; --travel: 49; --trail: 4">
             <div class="geminid__trail"></div>

@@ -1,7 +1,7 @@
 <template>
 	<h1>Lista de Usuarios</h1>
 	<br />
-	<el-button type="primary" plain @click="dialogFormVisible = true">
+	<el-button type="primary" plain @click="dialogFormVisible = true" size="large">
 		Crear Usuario &nbsp;&nbsp;
 		<el-icon>
 			<UserFilled />
@@ -12,8 +12,7 @@
 
 	<el-table :data="filterTableData" style="width: 100%" :header-cell-style="{
 		backgroundColor: '#89b3fd1c',
-		color: '#333',
-		fontWeight: 'bold',
+		color: '#303133c9',
 		textAlign: 'center'
 	}" :cell-style="{
 		textAlign: 'center'

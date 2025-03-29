@@ -2,7 +2,7 @@
 	<h1>Reservaciónes</h1>
 	<br />
 
-	<el-button type="primary" plain @click="() => dialogFormVisibleCreateReservation = true">
+	<el-button type="primary" plain @click="() => dialogFormVisibleCreateReservation = true" size="large">
 		Crear Reservacion &nbsp;&nbsp;
 		<el-icon>
 			<Calendar />
@@ -35,7 +35,7 @@
 		</div>
 		<div>
 			<p>Fecha</p>
-			<el-date-picker v-model="filterRange" type="daterange" unlink-panels range-separator="To"
+			<el-date-picker v-model="filterRange" type="daterange" unlink-panels range-separator="A"
 				start-placeholder="Fecha inicial" end-placeholder="Fecha Final" size="large" />
 		</div>
 	</div>

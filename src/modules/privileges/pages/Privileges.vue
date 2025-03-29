@@ -8,7 +8,7 @@
 		</el-tag>
 		<el-input v-if="inputVisible" ref="InputRef" v-model="inputValue" class="w-20" size="large"
 			@keyup.enter="handleInputConfirm" @blur="handleInputConfirm" />
-		<el-button v-else class="button-new-tag tag" size="small" @click="showInput">
+		<el-button v-else class="button-new-tag tag" size="large" @click="showInput">
 			+ Nuevo Rol
 		</el-button>
 	</div>
