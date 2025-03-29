@@ -7,7 +7,16 @@
 			<UserFilled />
 		</el-icon>
 	</el-button>
-	<el-table :data="filterTableData" style="width: 100%">
+	<br />
+	<br />
+	<el-table :data="filterTableData" style="width: 100%" :header-cell-style="{
+		backgroundColor: '#89b3fd1c',
+		color: '#333',
+		fontWeight: 'bold',
+		textAlign: 'center'
+	}" :cell-style="{
+		textAlign: 'center'
+	}">
 		<el-table-column label="Id" prop="id" />
 		<el-table-column label="Nombre" prop="name" />
 		<el-table-column label="Identificacion" prop="extencion" />

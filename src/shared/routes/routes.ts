@@ -6,6 +6,7 @@ import Customers from '../../modules/customers/routes'
 import Goals from '../../modules/goals/routes'
 import Reservations from '../../modules/reservation/routes'
 import Metrics from '../../modules/metrics/routes'
+import Reports from '../../modules/reports/routes'
 
 export default [
 	{
@@ -25,7 +26,8 @@ export default [
 			...Customers,
 			...Goals,
 			...Reservations,
-			...Metrics
+			...Metrics,
+			...Reports
 		]
 	},
 	...Auth
