@@ -23,7 +23,7 @@
 							<el-input v-model="password" class="input" type="password" show-password />
 						</div>
 						<div class="form-element form-submit">
-							<button id="signUp" class="signup" type="submit" name="signup">Iniciar Sesión</button>
+							<button @click="login" id="signUp" class="signup" type="submit" name="signup">Iniciar Sesión</button>
 						</div>
 					</form>
 				</div>
@@ -148,10 +148,8 @@ onMounted(() => {
 	}
 })
 
-login()
-
 async function login() {
-	const { error } = await request(() => Service.login("admin@admin.com", "12333333"))
+	const { error } = await request(() => Service.login(email.value, password.value))
 	if (!error) {
 	}
 }
