@@ -34,6 +34,8 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
+import { request } from "../../../shared/service/http"
+import * as Service from "../services/auth"
 
 const password = ref("")
 const email = ref("")
@@ -145,6 +147,15 @@ onMounted(() => {
 		}
 	}
 })
+
+login()
+
+async function login() {
+	const { error } = await request(() => Service.login("admin@admin.com", "12333333"))
+	if (!error) {
+	}
+}
+
 </script>
 
 <style lang="scss" scoped>
