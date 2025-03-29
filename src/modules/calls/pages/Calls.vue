@@ -43,6 +43,12 @@
 
 		<br />
 
+		<el-button type="warning" plain style="width: 715px;" size="large">
+			Cliente no registrado
+		</el-button>
+
+		<br />
+
 		<el-button type="primary" plain style="width: 715px;" size="large">
 			Crear llamada
 		</el-button>
