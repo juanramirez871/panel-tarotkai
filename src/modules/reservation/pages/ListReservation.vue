@@ -221,26 +221,8 @@ const alert = (message) => {
 </script>
 
 <style lang="scss" scoped>
-$main-green: #79dd09 !default;
-$main-green-rgb-015: rgba(121, 221, 9, 0.1) !default;
-$main-yellow: #bdbb49 !default;
-$main-yellow-rgb-015: rgba(189, 187, 73, 0.1) !default;
-$main-red: #bd150b !default;
-$main-red-rgb-015: rgba(189, 21, 11, 0.1) !default;
-$main-blue: #0076bd !default;
-$main-blue-rgb-015: rgba(0, 118, 189, 0.1) !default;
-
 .min-card {
 	min-width: 500px;
-}
-
-.dark {
-	background: #110f16;
-}
-
-
-.light {
-	background: #f3f5f7;
 }
 
 a,
@@ -260,7 +242,6 @@ a:hover {
 .postcard {
 	flex-wrap: wrap;
 	display: flex;
-
 	box-shadow: 0 4px 21px -12px rgba(0, 0, 0, 0.66);
 	border-radius: 10px;
 	margin: 0 0 2rem 0;
@@ -268,12 +249,9 @@ a:hover {
 	position: relative;
 	color: #ffffff;
 
-	&.dark {
-		background-color: #18151f;
-	}
 
 	&.light {
-		background-color: #e1e5ea;
+		background-color: #e9f3ff73;
 	}
 
 	.t-dark {
@@ -332,66 +310,5 @@ a:hover {
 		text-align: justify;
 		height: 100%;
 	}
-
-	.postcard__tagbox {
-		display: flex;
-		flex-flow: row wrap;
-		font-size: 14px;
-		margin: 20px 0 0 0;
-		padding: 0;
-		justify-content: center;
-
-		.tag__item {
-			display: inline-block;
-			background: rgba(83, 83, 83, 0.4);
-			border-radius: 3px;
-			padding: 2.5px 10px;
-			margin: 0 5px 5px 0;
-			cursor: default;
-			user-select: none;
-			transition: background-color 0.3s;
-		}
-	}
-
-	&:before {
-		content: "";
-		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		background-image: linear-gradient(-70deg, #424242, transparent 50%);
-		opacity: 1;
-		border-radius: 10px;
-	}
-}
-
-
-/* COLORS */
-
-.green .postcard__bar {
-	background-color: $main-green;
-}
-
-.green::before {
-	background-image: linear-gradient(-30deg,
-			$main-green-rgb-015,
-			transparent 50%);
-}
-
-.green:nth-child(2n)::before {
-	background-image: linear-gradient(30deg, $main-green-rgb-015, transparent 50%);
-}
-
-.postcard .postcard__tagbox .blue.play:hover {
-	background: $main-blue;
-}
-
-.blue .postcard__bar {
-	background-color: $main-blue;
-}
-
-.blue::before {
-	background-image: linear-gradient(-30deg, $main-blue-rgb-015, transparent 50%);
 }
 </style>
