@@ -10,7 +10,7 @@ import SideBar from '../components/SideBar.vue';
   <div class="content">
     <SideBar />
     <div class="content-view">
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
     </div>
   </div>
 </template>

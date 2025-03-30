@@ -12,13 +12,12 @@ export const useAuth = defineStore('auth', {
             this.user = user
         },
 
-        async login(payload, router) {
+        async login(payload) {
             try {
                 const { data, error } = await request(() => authService.login(payload))
                 if (!error) {
                     this.setUser(data.data)
                     localStorage.setItem('token', data.data.access_token);
-                    router.push({ name: 'calls' })
                     return data.data
                 }
                 return false

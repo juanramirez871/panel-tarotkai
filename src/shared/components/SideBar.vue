@@ -1,6 +1,5 @@
 <template>
-  <el-menu default-active="1" class="el-menu-vertical-demo menu" :collapse="isCollapse" @open="handleOpen"
-    @close="handleClose">
+  <el-menu default-active="1" class="el-menu-vertical-demo menu" :collapse="isCollapse">
 
     <el-menu-item>
       <el-radio-group v-model="isCollapse" style="">
@@ -93,12 +92,6 @@ import {
 import { ref } from 'vue'
 
 const isCollapse = ref(false)
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
 
 </script>
 
