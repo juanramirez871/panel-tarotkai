@@ -5,7 +5,7 @@ export function login(payload) {
 }
 
 export function getUser() {
-    return axios.get(`user`)
+    return axios.get(`user/current`)
 }
 
 export function logout() {

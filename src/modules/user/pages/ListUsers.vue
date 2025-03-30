@@ -18,10 +18,14 @@
 		textAlign: 'center'
 	}">
 		<el-table-column label="Id" prop="id" />
-		<el-table-column label="Fecha de Creacion" prop="createdAt" />
+		<el-table-column label="Fecha de Creacion" prop="createdAt" >
+			<template #default="scope">
+				{{ DateFormat(scope.row.createdAt, 'DD MMM YYYY') }}
+			</template>
+		</el-table-column>
 		<el-table-column label="Nombre" prop="name" />
-		<el-table-column label="Extensión" prop="extencion" />
-		<el-table-column label="Rol" prop="rol" />
+		<el-table-column label="Extensión" prop="extension" />
+		<el-table-column label="Rol" prop="role_id" />
 		<el-table-column align="right">
 			<template #header>
 				<el-input v-model="search" style="width: 240px" size="large" placeholder="Buscar..."
@@ -50,34 +54,42 @@
 		</template>
 	</el-dialog>
 
-	<el-dialog v-model="dialogFormVisible" title="Crear Usuario" width="800">
-		<el-form :model="form">
-			<el-form-item label="Nombre" :label-width="formLabelWidth">
+	<el-dialog 
+		v-model="dialogFormVisible" 
+		title="Crear Usuario" 
+		width="800" 
+		custom-class="custom-dialog"
+		center>
+		<el-form :model="form" label-position="top" class="custom-form">
+			<el-form-item label="Nombre">
 				<el-input v-model="form.name" autocomplete="off" />
 			</el-form-item>
-			<el-form-item label="Rol" :label-width="formLabelWidth">
+			<el-form-item label="Rol">
 				<el-select v-model="form.region">
 					<el-option label="Admin" value="shanghai" />
 					<el-option label="Tarotista" value="beijing" />
 					<el-option label="Central" value="beijing" />
 				</el-select>
 			</el-form-item>
-			<el-form-item label="Extensión" :label-width="formLabelWidth">
-				<el-input v-model="form.name" type="number" autocomplete="off" />
+			<el-form-item label="Extensión">
+				<el-input v-model="form.extension" type="number" autocomplete="off" />
+			</el-form-item>
+			<el-form-item label="Contraseña">
+				<el-input v-model="form.password" type="password" autocomplete="off" />
 			</el-form-item>
 		</el-form>
 		<template #footer>
 			<div class="dialog-footer">
-				<el-button @click="dialogFormVisible = false">Cancelar</el-button>
-				<el-button type="primary" @click="handleConfirmCreateUser">
+				<el-button @click="dialogFormVisible = false" class="cancel-btn">Cancelar</el-button>
+				<el-button type="primary" @click="handleConfirmCreateUser" class="confirm-btn">
 					Crear
 				</el-button>
 			</div>
 		</template>
 	</el-dialog>
 
-	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar Usuario" width="800">
-		<el-form :model="form">
+	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar Usuario" width="800" center custom-class="custom-dialog">
+		<el-form :model="form" class="custom-form">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
 				<el-input v-model="form.name" autocomplete="off" />
 			</el-form-item>
@@ -90,6 +102,9 @@
 			</el-form-item>
 			<el-form-item label="Extensión" :label-width="formLabelWidth">
 				<el-input v-model="form.name" type="number" autocomplete="off" />
+			</el-form-item>
+			<el-form-item label="Contraseña" :label-width="formLabelWidth">
+				<el-input v-model="form.name" type="text" autocomplete="off" />
 			</el-form-item>
 		</el-form>
 		<template #footer>
@@ -104,18 +119,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, reactive } from 'vue'
+import { computed, ref, reactive, onBeforeMount } from 'vue'
 import { Search, UserFilled } from '@element-plus/icons-vue'
 import { ElNotification } from 'element-plus'
-
-interface User {
-	id: number
-	createdAt: string
-	name: string
-	address: string
-	extencion: string
-	rol: string
-}
+import { request } from '../../../shared/service/http.js'
+import * as Service from "../services/user"
+import { DateFormat } from "../../../utils/dateFormat"
 
 const formLabelWidth = '140px'
 const dialogFormVisible = ref(false)
@@ -129,60 +138,35 @@ const form = reactive({
 	date2: '',
 	delivery: false,
 	type: [],
-	resource: '',
-	desc: '',
+	password: '',
+	extension: '',
 })
 const filterTableData = computed(() =>
-	tableData.filter(
+	tableData.value.filter(
 		(data) =>
 			!search.value ||
 			data.name.toLowerCase().includes(search.value.toLowerCase())
 	)
 )
-const handleEdit = (index: number, row: User) => {
-	console.log(index, row)
+const handleEdit = (index: number, row) => {
 	dialogFormVisibleEditUser.value = true
 }
-const handleDelete = (index: number, row: User) => {
-	console.log(index, row)
+
+const handleDelete = (index: number, row) => {
 	centerDialogVisible.value = true
 }
+const tableData = ref([])
 
-const tableData: User[] = [
-	{
-		createdAt: '2016-05-03',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
-		extencion: "100",
-		rol: "Admin",
-		id: 1
-	},
-	{
-		createdAt: '2016-05-02',
-		name: 'John',
-		address: 'No. 189, Grove St, Los Angeles',
-		extencion: "100",
-		rol: "Admin",
-		id: 1
-	},
-	{
-		createdAt: '2016-05-04',
-		name: 'Morgan',
-		address: 'No. 189, Grove St, Los Angeles',
-		extencion: "100",
-		rol: "Admin",
-		id: 1
-	},
-	{
-		createdAt: '2016-05-01',
-		name: 'Jessy',
-		address: 'No. 189, Grove St, Los Angeles',
-		extencion: "100",
-		rol: "Admin",
-		id: 1
-	},
-]
+onBeforeMount(async() => {
+	await getAllUsers()
+})
 
+async function getAllUsers() {
+	const { data, error } = await request(() => Service.getUsers(), false)
+	if (!error) {
+		tableData.value = data.data
+	}
+}
 
 const handleConfirm = () => {
 	alert("Se elimino correctamente el usuario")
@@ -207,3 +191,19 @@ const alert = (message) => {
 	})
 }
 </script>
+
+<style>
+.custom-dialog {
+	border-radius: 12px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.custom-form {
+	padding: 20px;
+}
+
+.dialog-footer {
+	text-align: right;
+	padding: 10px 20px;
+}
+</style>

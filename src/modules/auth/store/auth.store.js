@@ -18,6 +18,8 @@ export const useAuth = defineStore('auth', {
                 if (!error) {
                     this.setUser(data.data)
                     localStorage.setItem('token', data.data.access_token);
+                    // router.push({ name: 'calls' })
+		            window.location.href = '/calls'; 
                     return data.data
                 }
                 return false

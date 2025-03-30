@@ -158,10 +158,6 @@ onMounted(() => {
 
 async function login() {
 	await authLogin({ email: email.value, password: password.value }, router)
-	if(!hasErrors.value) {
-		// router.push({ name: 'calls' })
-		window.location.href = '/calls'; 
-	}
 }
 
 </script>
