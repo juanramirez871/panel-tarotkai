@@ -1,6 +1,6 @@
 export default [
 	{
-		path: '/configuration/customers',
+		path: '/customers',
 		name: 'customers',
 		meta: { layout: 'empty' },
 		component: () => import('../pages/CustomerList.vue'),

@@ -12,12 +12,14 @@ export const useAuth = defineStore('auth', {
             this.user = user
         },
 
-        async login(payload) {
+        async login(payload, router) {
             try {
-                const { data, error } = await request(() => authService.Login(payload))
+                const { data, error } = await request(() => authService.login(payload))
                 if (!error) {
-                    this.setUser(data.data.user)
-                    return true
+                    this.setUser(data.data)
+                    localStorage.setItem('token', data.data.access_token);
+                    router.push({ name: 'calls' })
+                    return data.data
                 }
                 return false
             } catch (error) {
@@ -27,10 +29,10 @@ export const useAuth = defineStore('auth', {
 
         async getUser() {
             try {
-                const { data, error } = await request(() => authService.GetUser())
+                const { data, error } = await request(() => authService.getUser())
                 if (!error) {
                     this.setUser(data.data)
-                    return data.data
+                    return true
                 }
                 this.setUser(null)
                 return null
@@ -42,7 +44,7 @@ export const useAuth = defineStore('auth', {
 
         async logout() {
             try {
-                const { error } = await request(() => authService.Logout())
+                const { error } = await request(() => authService.logout())
                 if (!error) {
                     localStorage.clear()
                     this.setUser(null)

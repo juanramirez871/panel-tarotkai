@@ -36,7 +36,15 @@
 import { onMounted, ref } from 'vue'
 import { request } from "../../../shared/service/http"
 import * as Service from "../services/auth"
+import { storeToRefs } from 'pinia'
+import { useAuth } from '../store/auth.store'
+import { useRouter } from 'vue-router'
+import { useErrors } from '../../../shared/store/errors'
 
+
+const router = useRouter()
+const { login: authLogin } = useAuth()
+const { hasErrors } = storeToRefs(useErrors())
 const password = ref("")
 const email = ref("")
 
@@ -149,9 +157,7 @@ onMounted(() => {
 })
 
 async function login() {
-	const { error } = await request(() => Service.login(email.value, password.value))
-	if (!error) {
-	}
+	await authLogin({ email: email.value, password: password.value }, router)
 }
 
 </script>
