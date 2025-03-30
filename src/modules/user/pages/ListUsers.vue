@@ -60,28 +60,31 @@
 		width="800" 
 		custom-class="custom-dialog"
 		center>
-		<el-form :model="form" label-position="top" class="custom-form">
+		<el-form :model="formCreate" label-position="top" class="custom-form">
 			<el-form-item label="Nombre">
-				<el-input v-model="form.name" autocomplete="off" />
+				<el-input v-model="formCreate.name" autocomplete="off" />
 			</el-form-item>
 			<el-form-item label="Rol">
-				<el-select v-model="form.region">
-					<el-option label="Admin" value="shanghai" />
-					<el-option label="Tarotista" value="beijing" />
-					<el-option label="Central" value="beijing" />
+				<el-select v-model="formCreate.rolId">
+					<el-option label="Admin" value="8" />
+					<el-option label="Tarotista" value="2" />
+					<el-option label="Central" value="3" />
 				</el-select>
 			</el-form-item>
 			<el-form-item label="Extensión">
-				<el-input v-model="form.extension" type="number" autocomplete="off" />
+				<el-input v-model="formCreate.extent" type="number" autocomplete="off" />
+			</el-form-item>
+			<el-form-item label="Correo">
+				<el-input v-model="formCreate.email" type="email" autocomplete="off" />
 			</el-form-item>
 			<el-form-item label="Contraseña">
-				<el-input v-model="form.password" type="password" autocomplete="off" />
+				<el-input v-model="formCreate.password" type="password" autocomplete="off" />
 			</el-form-item>
 		</el-form>
 		<template #footer>
 			<div class="dialog-footer">
 				<el-button @click="dialogFormVisible = false" class="cancel-btn">Cancelar</el-button>
-				<el-button type="primary" @click="handleConfirmCreateUser" class="confirm-btn">
+				<el-button type="primary" @click="createUser" class="confirm-btn">
 					Crear
 				</el-button>
 			</div>
@@ -89,22 +92,25 @@
 	</el-dialog>
 
 	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar Usuario" width="800" center custom-class="custom-dialog">
-		<el-form :model="form" class="custom-form">
+		<el-form :model="formEdit" class="custom-form">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
-				<el-input v-model="form.name" autocomplete="off" />
+				<el-input v-model="formEdit.name" autocomplete="off" />
 			</el-form-item>
 			<el-form-item label="Rol" :label-width="formLabelWidth">
-				<el-select v-model="form.region">
+				<el-select v-model="formEdit.rolId">
 					<el-option label="Admin" value="shanghai" />
 					<el-option label="Tarotista" value="beijing" />
 					<el-option label="Central" value="beijing" />
 				</el-select>
 			</el-form-item>
 			<el-form-item label="Extensión" :label-width="formLabelWidth">
-				<el-input v-model="form.name" type="number" autocomplete="off" />
+				<el-input v-model="formEdit.extent" type="number" autocomplete="off" />
+			</el-form-item>
+			<el-form-item label="Correo" :label-width="formLabelWidth">
+				<el-input v-model="formEdit.email" type="email" autocomplete="off" />
 			</el-form-item>
 			<el-form-item label="Contraseña" :label-width="formLabelWidth">
-				<el-input v-model="form.name" type="text" autocomplete="off" />
+				<el-input v-model="formEdit.password" type="text" autocomplete="off" />
 			</el-form-item>
 		</el-form>
 		<template #footer>
@@ -131,15 +137,19 @@ const dialogFormVisible = ref(false)
 const centerDialogVisible = ref(false)
 const dialogFormVisibleEditUser = ref(false)
 const search = ref('')
-const form = reactive({
+const formEdit = reactive({
 	name: '',
-	region: '',
-	date1: '',
-	date2: '',
-	delivery: false,
-	type: [],
+	email: '',
+	rolId: '',
+	extent: '',
 	password: '',
-	extension: '',
+})
+const formCreate = reactive({
+	name: '',
+	email: '',
+	rolId: '',
+	extent: '',
+	password: '',
 })
 const filterTableData = computed(() =>
 	tableData.value.filter(
@@ -168,14 +178,17 @@ async function getAllUsers() {
 	}
 }
 
+async function createUser() {
+	const { data, error } = await request(() => Service.createUser(formCreate), true)
+	if (!error) {
+		dialogFormVisible.value = false
+		tableData.value.push(data.data)
+	}
+}
+
 const handleConfirm = () => {
 	alert("Se elimino correctamente el usuario")
 	centerDialogVisible.value = false
-}
-
-const handleConfirmCreateUser = () => {
-	alert("Se creo el usuario correctamente")
-	dialogFormVisible.value = false
 }
 
 const handleConfirmEditUser = () => {
