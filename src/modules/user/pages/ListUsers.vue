@@ -131,14 +131,14 @@ const centerDialogVisible = ref(false)
 const dialogFormVisibleEditUser = ref(false)
 const search = ref('')
 const selectRoles = ref([])
-const formEdit = reactive({
+const formEdit = ref({
 	name: '',
 	email: '',
 	rolId: '',
 	extent: '',
 	password: '',
 })
-const formCreate = reactive({
+let formCreate = ref({
 	name: '',
 	email: '',
 	rolId: '',
@@ -181,10 +181,17 @@ async function getAllRoles() {
 }
 
 async function createUser() {
-	const { data, error } = await request(() => ServiceUser.createUser(formCreate), true)
+	const { data, error } = await request(() => ServiceUser.createUser(formCreate.value), true)
 	if (!error) {
 		dialogFormVisible.value = false
-		tableData.value.push(data.data)
+		tableData.value.unshift(data.data)
+		formCreate.value = {
+			name: '',
+			email: '',
+			rolId: '',
+			extent: '',
+			password: '',
+		}
 	}
 }
 

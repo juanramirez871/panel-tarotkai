@@ -1,5 +1,5 @@
 import axios from "axios"
 
 export function getRoles() {
-    return axios.get(`role/all`)
+    return axios.get(`permission/roles`)
 }
