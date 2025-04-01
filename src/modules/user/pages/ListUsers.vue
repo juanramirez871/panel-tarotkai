@@ -47,7 +47,7 @@
 		<template #footer>
 			<div class="dialog-footer">
 				<el-button @click="centerDialogVisible = false">Cancelar</el-button>
-				<el-button type="danger" @click="handleConfirm">
+				<el-button type="danger" @click="handleConfirmDelete">
 					Confirmar
 				</el-button>
 			</div>
@@ -117,7 +117,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, reactive, onBeforeMount } from 'vue'
+import { computed, ref, onBeforeMount } from 'vue'
 import { Search, UserFilled } from '@element-plus/icons-vue'
 import { ElNotification } from 'element-plus'
 import { request } from '../../../shared/service/http.js'
@@ -129,6 +129,7 @@ const formLabelWidth = '140px'
 const dialogFormVisible = ref(false)
 const centerDialogVisible = ref(false)
 const dialogFormVisibleEditUser = ref(false)
+const idUserToEdit = ref(null)
 const search = ref('')
 const selectRoles = ref([])
 const formEdit = ref({
@@ -152,11 +153,12 @@ const filterTableData = computed(() =>
 			data.name.toLowerCase().includes(search.value.toLowerCase())
 	)
 )
-const handleEdit = (index: number, row) => {
+const handleEdit = (_index: number, row) => {
 	dialogFormVisibleEditUser.value = true
 }
 
-const handleDelete = (index: number, row) => {
+const handleDelete = (_index: number, row) => {
+	idUserToEdit.value = row.idUser
 	centerDialogVisible.value = true
 }
 const tableData = ref([])
@@ -180,6 +182,13 @@ async function getAllRoles() {
 	}
 }
 
+async function deleteUser(id) {
+	const { data, error } = await request(() => ServiceUser.deleteUser(id), true)
+	if (!error) {
+		tableData.value = tableData.value.filter((el) => el.idUser != id)
+	}
+}
+
 async function createUser() {
 	const { data, error } = await request(() => ServiceUser.createUser(formCreate.value), true)
 	if (!error) {
@@ -195,8 +204,8 @@ async function createUser() {
 	}
 }
 
-const handleConfirm = () => {
-	alert("Se elimino correctamente el usuario")
+const handleConfirmDelete = () => {
+	deleteUser(idUserToEdit.value)
 	centerDialogVisible.value = false
 }
 

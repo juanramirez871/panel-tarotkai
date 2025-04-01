@@ -7,3 +7,7 @@ export function getUsers() {
 export function createUser(payload) {
     return axios.post(`user`, payload)
 }
+
+export function deleteUser(id) {
+    return axios.delete(`user/${id}`)
+}
