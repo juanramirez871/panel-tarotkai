@@ -18,6 +18,7 @@ axios.interceptors.response.use(response => response, error => {
     if (status >= 500) console.error(error);
     if (status === 400) throw data;
     if (status === 401) {
+        localStorage.removeItem("token")
         router.push({ name: 'login' });
     }
     if (status === 403) {

@@ -17,15 +17,15 @@
 	}" :cell-style="{
 		textAlign: 'center'
 	}">
-		<el-table-column label="Id" prop="id" />
-		<el-table-column label="Fecha de Creacion" prop="createdAt" >
+		<el-table-column label="Id" prop="idUser" />
+		<el-table-column label="Fecha de Creacion" prop="createdAt">
 			<template #default="scope">
 				{{ DateFormat(scope.row.createdAt, 'DD MMM YYYY') }}
 			</template>
 		</el-table-column>
 		<el-table-column label="Nombre" prop="name" />
 		<el-table-column label="Extensión" prop="extension" />
-		<el-table-column label="Rol" prop="role_id" />
+		<el-table-column label="Rol" prop="roleName" />
 		<el-table-column align="right">
 			<template #header>
 				<el-input v-model="search" style="width: 240px" size="large" placeholder="Buscar..."
@@ -54,21 +54,14 @@
 		</template>
 	</el-dialog>
 
-	<el-dialog 
-		v-model="dialogFormVisible" 
-		title="Crear Usuario" 
-		width="800" 
-		custom-class="custom-dialog"
-		center>
+	<el-dialog v-model="dialogFormVisible" title="Crear Usuario" width="800" custom-class="custom-dialog" center>
 		<el-form :model="formCreate" label-position="top" class="custom-form">
 			<el-form-item label="Nombre">
 				<el-input v-model="formCreate.name" autocomplete="off" />
 			</el-form-item>
 			<el-form-item label="Rol">
-				<el-select v-model="formCreate.rolId">
-					<el-option label="Admin" value="8" />
-					<el-option label="Tarotista" value="2" />
-					<el-option label="Central" value="3" />
+				<el-select placeholder="" v-model="formCreate.rolId">
+					<el-option v-for="role in selectRoles" :label="role.name" :key="role.id" :value="role.id" />
 				</el-select>
 			</el-form-item>
 			<el-form-item label="Extensión">
@@ -91,16 +84,15 @@
 		</template>
 	</el-dialog>
 
-	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar Usuario" width="800" center custom-class="custom-dialog">
+	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar Usuario" width="800" center
+		custom-class="custom-dialog">
 		<el-form :model="formEdit" class="custom-form">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
 				<el-input v-model="formEdit.name" autocomplete="off" />
 			</el-form-item>
 			<el-form-item label="Rol" :label-width="formLabelWidth">
-				<el-select v-model="formEdit.rolId">
-					<el-option label="Admin" value="shanghai" />
-					<el-option label="Tarotista" value="beijing" />
-					<el-option label="Central" value="beijing" />
+				<el-select placeholder="" v-model="formEdit.rolId">
+					<el-option v-for="role in selectRoles" :label="role.name" :key="role.id" :value="role.id" />
 				</el-select>
 			</el-form-item>
 			<el-form-item label="Extensión" :label-width="formLabelWidth">
@@ -129,7 +121,8 @@ import { computed, ref, reactive, onBeforeMount } from 'vue'
 import { Search, UserFilled } from '@element-plus/icons-vue'
 import { ElNotification } from 'element-plus'
 import { request } from '../../../shared/service/http.js'
-import * as Service from "../services/user"
+import * as ServiceUser from "../services/user"
+import * as ServiceRole from "../../privileges/services/role.js"
 import { DateFormat } from "../../../utils/dateFormat"
 
 const formLabelWidth = '140px'
@@ -137,6 +130,7 @@ const dialogFormVisible = ref(false)
 const centerDialogVisible = ref(false)
 const dialogFormVisibleEditUser = ref(false)
 const search = ref('')
+const selectRoles = ref([])
 const formEdit = reactive({
 	name: '',
 	email: '',
@@ -167,19 +161,27 @@ const handleDelete = (index: number, row) => {
 }
 const tableData = ref([])
 
-onBeforeMount(async() => {
+onBeforeMount(async () => {
 	await getAllUsers()
+	await getAllRoles()
 })
 
 async function getAllUsers() {
-	const { data, error } = await request(() => Service.getUsers(), false)
+	const { data, error } = await request(() => ServiceUser.getUsers(), false)
 	if (!error) {
 		tableData.value = data.data
 	}
 }
 
+async function getAllRoles() {
+	const { data, error } = await request(() => ServiceRole.getRoles(), false)
+	if (!error) {
+		selectRoles.value = data.data
+	}
+}
+
 async function createUser() {
-	const { data, error } = await request(() => Service.createUser(formCreate), true)
+	const { data, error } = await request(() => ServiceUser.createUser(formCreate), true)
 	if (!error) {
 		dialogFormVisible.value = false
 		tableData.value.push(data.data)
