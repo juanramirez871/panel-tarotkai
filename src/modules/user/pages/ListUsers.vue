@@ -119,7 +119,6 @@
 <script lang="ts" setup>
 import { computed, ref, onBeforeMount } from 'vue'
 import { Search, UserFilled } from '@element-plus/icons-vue'
-import { ElNotification } from 'element-plus'
 import { request } from '../../../shared/service/http.js'
 import * as ServiceUser from "../services/user"
 import * as ServiceRole from "../../privileges/services/role.js"
@@ -129,6 +128,7 @@ const formLabelWidth = '140px'
 const dialogFormVisible = ref(false)
 const centerDialogVisible = ref(false)
 const dialogFormVisibleEditUser = ref(false)
+const idUserToDelete = ref(null)
 const idUserToEdit = ref(null)
 const search = ref('')
 const selectRoles = ref([])
@@ -137,7 +137,7 @@ const formEdit = ref({
 	email: '',
 	rolId: '',
 	extent: '',
-	password: '',
+	password: null,
 })
 let formCreate = ref({
 	name: '',
@@ -153,12 +153,14 @@ const filterTableData = computed(() =>
 			data.name.toLowerCase().includes(search.value.toLowerCase())
 	)
 )
-const handleEdit = (_index: number, row) => {
+const handleEdit = async (_index: number, row) => {
+	idUserToEdit.value = row.idUser
+	await getUser(row.idUser)
 	dialogFormVisibleEditUser.value = true
 }
 
 const handleDelete = (_index: number, row) => {
-	idUserToEdit.value = row.idUser
+	idUserToDelete.value = row.idUser
 	centerDialogVisible.value = true
 }
 const tableData = ref([])
@@ -183,9 +185,40 @@ async function getAllRoles() {
 }
 
 async function deleteUser(id) {
-	const { data, error } = await request(() => ServiceUser.deleteUser(id), true)
-	if (!error) {
+	const { data } = await request(() => ServiceUser.deleteUser(id), true)
+	if (data) {
 		tableData.value = tableData.value.filter((el) => el.idUser != id)
+	}
+}
+
+async function getUser(id) {
+	const { data, error } = await request(() => ServiceUser.getUser(id), false)
+	if (!error) {
+		formEdit.value = {
+			name: data.data.name,
+			email: data.data.email,
+			rolId: data.data.role_id,
+			extent: data.data.extension,
+			password: null,
+		}
+	}
+}
+
+async function editUser(id) {
+	const { data, error } = await request(() => ServiceUser.editUser(id, formEdit.value), true)
+	if (!error) {
+		const index = tableData.value.findIndex((el) => el.idUser == id);
+		tableData.value = tableData.value.filter((el) => el.idUser != id);
+		if (index !== -1) tableData.value.splice(index, 0, data.data);
+
+		formEdit.value = {
+			name: '',
+			email: '',
+			rolId: '',
+			extent: '',
+			password: '',
+		}
+		dialogFormVisibleEditUser.value = false
 	}
 }
 
@@ -205,22 +238,14 @@ async function createUser() {
 }
 
 const handleConfirmDelete = () => {
-	deleteUser(idUserToEdit.value)
+	deleteUser(idUserToDelete.value)
 	centerDialogVisible.value = false
 }
 
 const handleConfirmEditUser = () => {
-	alert("Se edito el usuario correctamente")
-	dialogFormVisibleEditUser.value = false
+	editUser(idUserToEdit.value)
 }
 
-const alert = (message) => {
-	ElNotification.success({
-		title: 'Exitosamente',
-		message: message,
-		offset: 10,
-	})
-}
 </script>
 
 <style>
