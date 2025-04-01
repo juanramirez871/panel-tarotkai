@@ -10,14 +10,17 @@
 	<br />
 	<br />
 
-	<el-table empty-text="No hay datos" :data="filterTableData" style="width: 100%" :header-cell-style="{
-		backgroundColor: '#89b3fd1c',
-		color: '#303133c9',
-		textAlign: 'center',
 
-	}" :cell-style="{
-		textAlign: 'center'
-	}">
+
+	<el-table v-loading="isLoadingUsers" empty-text="No hay datos" :data="filterTableData" style="width: 100%"
+		:header-cell-style="{
+			backgroundColor: '#89b3fd1c',
+			color: '#303133c9',
+			textAlign: 'center',
+
+		}" :cell-style="{
+			textAlign: 'center'
+		}">
 		<el-table-column label="Id" prop="idUser" />
 		<el-table-column label="Fecha de Creacion" prop="createdAt">
 			<template #default="scope">
@@ -43,6 +46,7 @@
 			</template>
 		</el-table-column>
 	</el-table>
+
 
 	<el-dialog v-model="centerDialogVisible" title="Advertencia" width="800" align-center>
 		<span>¿Deseas eliminar el usuario? esta accion no se puede devolver</span>
@@ -134,6 +138,8 @@ const idUserToDelete = ref(null)
 const idUserToEdit = ref(null)
 const search = ref('')
 const selectRoles = ref([])
+const isLoadingUsers = ref(false)
+const tableData = ref([])
 const formEdit = ref({
 	name: '',
 	email: '',
@@ -148,6 +154,12 @@ let formCreate = ref({
 	extent: '',
 	password: '',
 })
+
+onBeforeMount(async () => {
+	await getAllUsers()
+	await getAllRoles()
+})
+
 const filterTableData = computed(() =>
 	tableData.value.filter(
 		(data) =>
@@ -165,17 +177,13 @@ const handleDelete = (_index: number, row) => {
 	idUserToDelete.value = row.idUser
 	centerDialogVisible.value = true
 }
-const tableData = ref([])
-
-onBeforeMount(async () => {
-	await getAllUsers()
-	await getAllRoles()
-})
 
 async function getAllUsers() {
+	isLoadingUsers.value = true
 	const { data, error } = await request(() => ServiceUser.getUsers(), false)
 	if (!error) {
 		tableData.value = data.data
+		isLoadingUsers.value = false
 	}
 }
 
@@ -186,14 +194,14 @@ async function getAllRoles() {
 	}
 }
 
-async function deleteUser(id) {
+async function deleteUser(id: number) {
 	const { data } = await request(() => ServiceUser.deleteUser(id), true)
 	if (data) {
 		tableData.value = tableData.value.filter((el) => el.idUser != id)
 	}
 }
 
-async function getUser(id) {
+async function getUser(id: number) {
 	const { data, error } = await request(() => ServiceUser.getUser(id), false)
 	if (!error) {
 		formEdit.value = {
@@ -206,7 +214,7 @@ async function getUser(id) {
 	}
 }
 
-async function editUser(id) {
+async function editUser(id: number) {
 	const { data, error } = await request(() => ServiceUser.editUser(id, formEdit.value), true)
 	if (!error) {
 		const index = tableData.value.findIndex((el) => el.idUser == id);
