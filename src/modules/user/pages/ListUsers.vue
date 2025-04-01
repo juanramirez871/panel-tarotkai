@@ -10,10 +10,11 @@
 	<br />
 	<br />
 
-	<el-table :data="filterTableData" style="width: 100%" :header-cell-style="{
+	<el-table empty-text="No hay datos" :data="filterTableData" style="width: 100%" :header-cell-style="{
 		backgroundColor: '#89b3fd1c',
 		color: '#303133c9',
-		textAlign: 'center'
+		textAlign: 'center',
+
 	}" :cell-style="{
 		textAlign: 'center'
 	}">
@@ -24,6 +25,7 @@
 			</template>
 		</el-table-column>
 		<el-table-column label="Nombre" prop="name" />
+		<el-table-column label="Correo" prop="email" />
 		<el-table-column label="Extensión" prop="extension" />
 		<el-table-column label="Rol" prop="roleName" />
 		<el-table-column align="right">
