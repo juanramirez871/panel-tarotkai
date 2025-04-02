@@ -1,5 +1,5 @@
 import axios from "axios"
 
-export function getModules() {
-    return axios.get(`permission/modules`)
+export function getModules(idRole) {
+    return axios.get(`permission/roles/${idRole}/modules`)
 }

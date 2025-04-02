@@ -16,14 +16,14 @@
 	<div v-if="activeRole">
 		<div style="text-align: center;">
 			<br />
-			<h1>Privilegios de {{ activeRole }}</h1>
+			<h1>Privilegios de {{ activeRole.name }}</h1>
 			<br />
 		</div>
 
 		<center>
 			<el-tag @click="setActiveModule(module)" class="tag" style="cursor: pointer;"
 				v-for="module in modules"
-				:class="{ 'active-tag': activeModule === module[0] }" :key="module[1]['idModule']" type="primary" size="large" effect="dark">
+				:class="{ 'active-tag': activeModule === module[0] }" :key="module[1]['idModule']" type="primary" size="large" effect="ligth">
 				{{ module[0] }}
 			</el-tag>
 			<h3 v-if="!activeModule">Selecciona un modulo</h3>
@@ -31,10 +31,10 @@
 
 		<div v-if="activeModule">
 			<ul class="tg-list">
-				<li class="tg-list-item" v-for="i, index in [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]">
-					<h4>Privilegio {{ index }}</h4>
-					<input @click="handleCheckPrivileges" class="tgl tgl-skewed" :id="'cb3' + index" type="checkbox" />
-					<label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" :for="'cb3' + index"></label>
+				<li class="tg-list-item" v-for="privilege in privilegesModule">
+					<h4>{{ privilege.name }}</h4>
+					<input @click="handleCheckPrivileges" :checked="privilege.check" class="tgl tgl-skewed" :id="'cb3' + privilege.idPrivilege" type="checkbox" />
+					<label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" :for="'cb3' + privilege.idPrivilege"></label>
 				</li>
 			</ul>
 		</div>
@@ -68,10 +68,14 @@ import * as ServiceRole from "../../privileges/services/role.js"
 import * as ServiceModule from "../../privileges/services/module.js"
 
 const inputValue = ref('')
-const activeRole = ref('')
+const activeRole = ref({
+	id: null,
+	name: ''
+})
 const activeModule = ref()
 const roleToDelete = ref('')
 const roles = ref([])
+const privilegesModule = ref([])
 const modules = ref([])
 const centerDialogVisible = ref(false)
 const inputVisible = ref(false)
@@ -80,7 +84,6 @@ const InputRef = ref<InputInstance>()
 onBeforeMount(async () => {
 
 	await getAllRoles()
-	await getModules()
 })
 
 const handleClose = (tag) => {
@@ -116,12 +119,14 @@ const alertSuccess = (message) => {
 	})
 }
 
-function setActiveRole({ name }) {
-	activeRole.value = name
+async function setActiveRole(role) {
+	activeRole.value = role
+	await getModulesWithPrivileges()
 }
 
 function setActiveModule([name, data]) {
 	activeModule.value = name
+	privilegesModule.value = data.privileges
 }
 
 async function getAllRoles() {
@@ -131,11 +136,10 @@ async function getAllRoles() {
 	}
 }
 
-async function getModules() {
-	const { data, error } = await request(() => ServiceModule.getModules(), false)
+async function getModulesWithPrivileges() {
+	const { data, error } = await request(() => ServiceModule.getModules(activeRole.value.id), false)
 	if (!error) {
 		modules.value = Object.entries(data.data)
-		console.log(modules.value);
 	}
 }
 
@@ -165,8 +169,8 @@ const handleCheckPrivileges = () => {
 }
 
 .active-tag {
-	background-color: rgba(210, 225, 240, 0.62) !important;
-	color: #5a5959 !important;
+	background-color: rgba(20, 128, 237, 0.62) !important;
+	color: #fff !important;
 	border-color: rgba(168, 207, 248, 0.62) !important;
 }
 
