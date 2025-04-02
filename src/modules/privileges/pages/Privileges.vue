@@ -41,13 +41,13 @@
 						:for="'cb3' + privilege.idPrivilege"></label>
 				</li>
 			</ul>
-			<div style="display: flex; flex-direction: column; align-items: center;" v-if="
-				privilegesModule.subModules.length > 0">
+			<div style="display: flex; flex-direction: column; align-items: center;"
+				v-if="privilegesModule.subModules.length > 0">
 				<br>
 				<br>
 				<div class="content-permission">
 					<div v-for="submodules in privilegesModule.subModules">
-						<h2 class="title-role">{{ submodules.name }}</h2>
+						<h2 class="title-role">{{ submodules.name.split('_').join(' ') }}</h2>
 						<ul style="justify-content" class="tg-list">
 							<li class="tg-list-item center-tag" v-for="privilege in submodules.privileges">
 								<h4>{{ privilege.name }}</h4>
@@ -66,7 +66,9 @@
 	<div v-else>
 		<div class="flex items-center justify-center h-100%">
 			<el-empty description="No se ha seleccionado un rol" />
-			<h1 style="text-align: center;">Selecciona un Rol</h1>
+			<center>
+				<h1>Selecciona un Rol</h1>
+			</center>
 		</div>
 	</div>
 
@@ -86,7 +88,6 @@
 <script lang="ts" setup>
 import { nextTick, onBeforeMount, ref } from 'vue'
 import type { InputInstance } from 'element-plus'
-import { ElNotification } from 'element-plus'
 import { request } from '../../../shared/service/http.js'
 import * as ServiceRole from "../../privileges/services/role.js"
 import * as ServiceModule from "../../privileges/services/module.js"
@@ -135,15 +136,8 @@ const handleInputConfirm = async () => {
 	inputValue.value = ''
 }
 
-const alertSuccess = (message) => {
-	ElNotification.success({
-		title: 'Exitosamente',
-		message: message,
-		offset: 10,
-	})
-}
-
 async function setActiveRole(role) {
+	if (role.name != activeRole.value.name) activeModule.value = null
 	activeRole.value = role
 	await getModulesWithPrivileges()
 }
@@ -174,15 +168,15 @@ async function createRole(payload) {
 	}
 }
 
-async function deleteRole(id) {
-	const { data, error } = await request(() => ServiceRole.deleteRole(id), true)
-	if (!error) {
+async function deleteRole(id: number | string) {
+	const data = await request(() => ServiceRole.deleteRole(id), true)
+	if (!data.error) {
 		roles.value = roles.value.filter((el) => el.id != id)
 	}
 }
 
-const handleCheckPrivileges = (privilege) => {
-	alertSuccess("Se agrego el permiso correctamente")
+const handleCheckPrivileges = async (privilege) => {
+	await request(() => ServiceModule.changePrivilegeRole(activeRole.value.id, privilege.idPrivilege), true)
 }
 
 </script>
