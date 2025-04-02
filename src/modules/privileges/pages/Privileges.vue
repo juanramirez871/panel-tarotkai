@@ -2,9 +2,9 @@
 	<h1>Lista de Privilegios</h1>
 	<br />
 	<div class="flex gap-2">
-		<el-tag v-for="tag in dynamicTags" class="tag" :key="tag" closable :disable-transitions="false"
-			@close="handleClose(tag)">
-			<p style="cursor: pointer;">{{ tag }}</p>
+		<el-tag v-for="role in roles" class="tag" :key="role.id" closable :disable-transitions="false"
+			@close="handleClose(role.id)">
+			<p style="cursor: pointer;">{{ role.name }}</p>
 		</el-tag>
 		<el-input v-if="inputVisible" ref="InputRef" v-model="inputValue" class="w-20" size="large"
 			@keyup.enter="handleInputConfirm" @blur="handleInputConfirm" />
@@ -35,27 +35,31 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, ref } from 'vue'
+import { nextTick, onBeforeMount, ref } from 'vue'
 import type { InputInstance } from 'element-plus'
 import { ElNotification } from 'element-plus'
-
+import { request } from '../../../shared/service/http.js'
+import * as ServiceRole from "../../privileges/services/role.js"
 
 const inputValue = ref('')
-const tagDelete = ref('')
+const roleToDelete = ref('')
+const roles = ref([])
 const centerDialogVisible = ref(false)
-const dynamicTags = ref(['central', 'tarotista', 'admin', 'tecnico'])
 const inputVisible = ref(false)
 const InputRef = ref<InputInstance>()
 
+onBeforeMount(async () => {
+
+	await getAllRoles()
+})
+
 const handleClose = (tag) => {
-	tagDelete.value = tag
+	roleToDelete.value = tag
 	centerDialogVisible.value = true
 }
 
-const handleConfirm = () => {
-
-	dynamicTags.value.splice(dynamicTags.value.indexOf(tagDelete.value), 1)
-	alertSuccess("El rol fue eliminado correctamente")
+const handleConfirm = async () => {
+	await deleteRole(roleToDelete.value)
 	centerDialogVisible.value = false
 }
 
@@ -66,10 +70,9 @@ const showInput = () => {
 	})
 }
 
-const handleInputConfirm = () => {
+const handleInputConfirm = async () => {
 	if (inputValue.value) {
-		dynamicTags.value.push(inputValue.value)
-		alertSuccess("Se agrego el rol correctamente")
+		await createRole({ name: inputValue.value })
 	}
 	inputVisible.value = false
 	inputValue.value = ''
@@ -81,6 +84,27 @@ const alertSuccess = (message) => {
 		message: message,
 		offset: 10,
 	})
+}
+
+async function getAllRoles() {
+	const { data, error } = await request(() => ServiceRole.getRoles(), false)
+	if (!error) {
+		roles.value = data.data
+	}
+}
+
+async function createRole(payload) {
+	const { data, error } = await request(() => ServiceRole.createRoles(payload), true)
+	if (!error) {
+		roles.value.push(data.data)
+	}
+}
+
+async function deleteRole(id) {
+	const { data, error } = await request(() => ServiceRole.deleteRole(id), true)
+	if (!error) {
+		roles.value = roles.value.filter((el) => el.id != id)
+	}
 }
 
 const handleCheckPrivileges = () => {
