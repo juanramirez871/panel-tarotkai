@@ -13,7 +13,7 @@
 		</el-button>
 	</div>
 
-	<div v-if="activeRole">
+	<div v-if="activeRole.id">
 		<div style="text-align: center;">
 			<br />
 			<h1>Privilegios de {{ activeRole.name }}</h1>
@@ -35,7 +35,7 @@
 			<ul class="tg-list">
 				<li class="tg-list-item center-tag" v-for="privilege in privilegesModule.privileges">
 					<h4>{{ privilege.name }}</h4>
-					<input @click="handleCheckPrivileges" :checked="privilege.check" class="tgl tgl-skewed"
+					<input @click="handleCheckPrivileges(privilege)" v-model="privilege.check" class="tgl tgl-skewed"
 						:id="'cb3' + privilege.idPrivilege" type="checkbox" />
 					<label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON"
 						:for="'cb3' + privilege.idPrivilege"></label>
@@ -43,18 +43,22 @@
 			</ul>
 			<div style="display: flex; flex-direction: column; align-items: center;" v-if="
 				privilegesModule.subModules.length > 0">
-				<div v-for="submodules in privilegesModule.subModules">
-					<br>
-					<h2 style="text-align: center;">{{ submodules.name }}</h2>
-					<ul class="tg-list">
-						<li class="tg-list-item center-tag" v-for="privilege in submodules.privileges">
-							<h4>{{ privilege.name }}</h4>
-							<input @click="handleCheckPrivileges" :checked="privilege.check" class="tgl tgl-skewed"
-								:id="'cb3' + privilege.idPrivilege" type="checkbox" />
-							<label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON"
-								:for="'cb3' + privilege.idPrivilege"></label>
-						</li>
-					</ul>
+				<br>
+				<br>
+				<div class="content-permission">
+					<div v-for="submodules in privilegesModule.subModules">
+						<h2 class="title-role">{{ submodules.name }}</h2>
+						<ul style="justify-content" class="tg-list">
+							<li class="tg-list-item center-tag" v-for="privilege in submodules.privileges">
+								<h4>{{ privilege.name }}</h4>
+								<input @click="handleCheckPrivileges(privilege)" v-model="privilege.check"
+									class="tgl tgl-skewed" :id="'cb3' + privilege.idPrivilege" type="checkbox" />
+								<label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON"
+									:for="'cb3' + privilege.idPrivilege"></label>
+							</li>
+						</ul>
+						<br>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -177,13 +181,28 @@ async function deleteRole(id) {
 	}
 }
 
-const handleCheckPrivileges = () => {
+const handleCheckPrivileges = (privilege) => {
 	alertSuccess("Se agrego el permiso correctamente")
 }
 
 </script>
 
 <style scoped>
+.title-role {
+	text-align: center;
+	background: #dfe2e775;
+	border-radius: 5px;
+	width: 100%;
+}
+
+.content-permission {
+	display: flex;
+	gap: 20px;
+	justify-content: center;
+	align-content: center;
+	flex-wrap: wrap;
+}
+
 .center-tag {
 	text-align: center;
 	display: flex;
