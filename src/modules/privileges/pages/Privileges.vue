@@ -21,22 +21,42 @@
 		</div>
 
 		<center>
-			<el-tag @click="setActiveModule(module)" class="tag" style="cursor: pointer;"
-				v-for="module in modules"
-				:class="{ 'active-tag': activeModule === module[0] }" :key="module[1]['idModule']" type="primary" size="large" effect="ligth">
+			<el-tag @click="setActiveModule(module)" class="tag" style="cursor: pointer;" v-for="module in modules"
+				:class="{ 'active-tag': activeModule === module[0] }" :key="module[1]['idModule']" type="primary"
+				size="large" effect="ligth">
 				{{ module[0] }}
 			</el-tag>
 			<h3 v-if="!activeModule">Selecciona un modulo</h3>
 		</center>
 
-		<div v-if="activeModule">
+		<div style="display: flex; flex-direction: column; align-items: center;" v-if="activeModule">
+			<br>
+			<h2>Permisos Generales</h2>
 			<ul class="tg-list">
-				<li class="tg-list-item" v-for="privilege in privilegesModule">
+				<li class="tg-list-item center-tag" v-for="privilege in privilegesModule.privileges">
 					<h4>{{ privilege.name }}</h4>
-					<input @click="handleCheckPrivileges" :checked="privilege.check" class="tgl tgl-skewed" :id="'cb3' + privilege.idPrivilege" type="checkbox" />
-					<label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" :for="'cb3' + privilege.idPrivilege"></label>
+					<input @click="handleCheckPrivileges" :checked="privilege.check" class="tgl tgl-skewed"
+						:id="'cb3' + privilege.idPrivilege" type="checkbox" />
+					<label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON"
+						:for="'cb3' + privilege.idPrivilege"></label>
 				</li>
 			</ul>
+			<div style="display: flex; flex-direction: column; align-items: center;" v-if="
+				privilegesModule.subModules.length > 0">
+				<div v-for="submodules in privilegesModule.subModules">
+					<br>
+					<h2 style="text-align: center;">{{ submodules.name }}</h2>
+					<ul class="tg-list">
+						<li class="tg-list-item center-tag" v-for="privilege in submodules.privileges">
+							<h4>{{ privilege.name }}</h4>
+							<input @click="handleCheckPrivileges" :checked="privilege.check" class="tgl tgl-skewed"
+								:id="'cb3' + privilege.idPrivilege" type="checkbox" />
+							<label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON"
+								:for="'cb3' + privilege.idPrivilege"></label>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div v-else>
@@ -75,7 +95,7 @@ const activeRole = ref({
 const activeModule = ref()
 const roleToDelete = ref('')
 const roles = ref([])
-const privilegesModule = ref([])
+const privilegesModule: any = ref({})
 const modules = ref([])
 const centerDialogVisible = ref(false)
 const inputVisible = ref(false)
@@ -126,7 +146,7 @@ async function setActiveRole(role) {
 
 function setActiveModule([name, data]) {
 	activeModule.value = name
-	privilegesModule.value = data.privileges
+	privilegesModule.value = data
 }
 
 async function getAllRoles() {
@@ -164,6 +184,14 @@ const handleCheckPrivileges = () => {
 </script>
 
 <style scoped>
+.center-tag {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
 .tag {
 	transition: all 0.3s ease, color 0.3s ease;
 }
