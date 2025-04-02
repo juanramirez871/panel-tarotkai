@@ -3,7 +3,7 @@
 	<br />
 	<div class="flex gap-2">
 		<el-tag v-for="role in roles" class="tag" :key="role.id" closable :disable-transitions="false"
-			@close="handleClose(role.id)">
+			@close="handleClose(role.id)" @click="setActiveRole(role)">
 			<p style="cursor: pointer;">{{ role.name }}</p>
 		</el-tag>
 		<el-input v-if="inputVisible" ref="InputRef" v-model="inputValue" class="w-20" size="large"
@@ -13,13 +13,38 @@
 		</el-button>
 	</div>
 
-	<ul class="tg-list">
-		<li class="tg-list-item" v-for="i, index in [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]">
-			<h4>Privilegio {{ index }}</h4>
-			<input @click="handleCheckPrivileges" class="tgl tgl-skewed" :id="'cb3' + index" type="checkbox" />
-			<label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" :for="'cb3' + index"></label>
-		</li>
-	</ul>
+	<div v-if="activeRole">
+		<div style="text-align: center;">
+			<br />
+			<h1>Privilegios de {{ activeRole }}</h1>
+			<br />
+		</div>
+
+		<center>
+			<el-tag @click="setActiveModule(module)" class="tag" style="cursor: pointer;"
+				v-for="module in modules"
+				:class="{ 'active-tag': activeModule === module[0] }" :key="module[1]['idModule']" type="primary" size="large" effect="dark">
+				{{ module[0] }}
+			</el-tag>
+			<h3 v-if="!activeModule">Selecciona un modulo</h3>
+		</center>
+
+		<div v-if="activeModule">
+			<ul class="tg-list">
+				<li class="tg-list-item" v-for="i, index in [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]">
+					<h4>Privilegio {{ index }}</h4>
+					<input @click="handleCheckPrivileges" class="tgl tgl-skewed" :id="'cb3' + index" type="checkbox" />
+					<label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" :for="'cb3' + index"></label>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div v-else>
+		<div class="flex items-center justify-center h-100%">
+			<el-empty description="No se ha seleccionado un rol" />
+			<h1 style="text-align: center;">Selecciona un Rol</h1>
+		</div>
+	</div>
 
 	<el-dialog v-model="centerDialogVisible" title="Advertencia" width="500" align-center>
 		<span>¿Deseas eliminar el rol? esta accion no se puede devolver</span>
@@ -40,10 +65,14 @@ import type { InputInstance } from 'element-plus'
 import { ElNotification } from 'element-plus'
 import { request } from '../../../shared/service/http.js'
 import * as ServiceRole from "../../privileges/services/role.js"
+import * as ServiceModule from "../../privileges/services/module.js"
 
 const inputValue = ref('')
+const activeRole = ref('')
+const activeModule = ref()
 const roleToDelete = ref('')
 const roles = ref([])
+const modules = ref([])
 const centerDialogVisible = ref(false)
 const inputVisible = ref(false)
 const InputRef = ref<InputInstance>()
@@ -51,6 +80,7 @@ const InputRef = ref<InputInstance>()
 onBeforeMount(async () => {
 
 	await getAllRoles()
+	await getModules()
 })
 
 const handleClose = (tag) => {
@@ -86,10 +116,26 @@ const alertSuccess = (message) => {
 	})
 }
 
+function setActiveRole({ name }) {
+	activeRole.value = name
+}
+
+function setActiveModule([name, data]) {
+	activeModule.value = name
+}
+
 async function getAllRoles() {
 	const { data, error } = await request(() => ServiceRole.getRoles(), false)
 	if (!error) {
 		roles.value = data.data
+	}
+}
+
+async function getModules() {
+	const { data, error } = await request(() => ServiceModule.getModules(), false)
+	if (!error) {
+		modules.value = Object.entries(data.data)
+		console.log(modules.value);
 	}
 }
 
@@ -114,6 +160,16 @@ const handleCheckPrivileges = () => {
 </script>
 
 <style scoped>
+.tag {
+	transition: all 0.3s ease, color 0.3s ease;
+}
+
+.active-tag {
+	background-color: rgba(210, 225, 240, 0.62) !important;
+	color: #5a5959 !important;
+	border-color: rgba(168, 207, 248, 0.62) !important;
+}
+
 .tag {
 	margin: 15px;
 	font-size: 20px;

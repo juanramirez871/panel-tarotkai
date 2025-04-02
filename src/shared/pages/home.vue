@@ -30,4 +30,12 @@ import SideBar from '../components/SideBar.vue';
   width: 100%;
   overflow-x: hidden;
 }
+
+::v-deep(.el-empty__description) {
+  color: #eceaea !important;
+}
+
+::v-deep(.el-empty__image) {
+  filter: brightness(0.8);
+}
 </style>
