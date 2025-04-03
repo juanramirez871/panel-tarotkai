@@ -55,15 +55,15 @@
 
 	<el-dialog v-model="isCreateDialogVisible" title="Crear Tipo de Llamada" width="800" custom-class="custom-dialog"
 		center>
-		<el-form :model="form" class="custom-form">
+		<el-form :model="formToCreate" class="custom-form">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
-				<el-input v-model="form.name" autocomplete="off" />
+				<el-input v-model="formToCreate.name" autocomplete="off" />
 			</el-form-item>
 			<el-form-item label="Descripción" :label-width="formLabelWidth">
-				<el-input v-model="form.description" type="textarea" :rows="3" autocomplete="off" />
+				<el-input v-model="formToCreate.description" type="textarea" :rows="3" autocomplete="off" />
 			</el-form-item>
 			<el-form-item label="Tiempo Gratis" :label-width="formLabelWidth">
-				<el-input v-model="form.free_time" placeholder="Minutos" type="number" autocomplete="off" />
+				<el-input v-model="formToCreate.free_time" placeholder="Minutos" type="number" autocomplete="off" />
 			</el-form-item>
 		</el-form>
 		<template #footer>
@@ -115,6 +115,11 @@ const searchQuery = ref('')
 const typeCallToEdit = ref()
 const typeCallToDelete = ref()
 const form = reactive({
+	name: '',
+	description: '',
+	free_time: null,
+})
+const formToCreate = reactive({
 	name: '',
 	description: '',
 	free_time: null,
@@ -175,7 +180,7 @@ async function getTypeCall(id: number) {
 }
 
 async function createTypeCall() {
-	const { data, error } = await request(() => ServiceCalls.createTypeCall(form), true)
+	const { data, error } = await request(() => ServiceCalls.createTypeCall(formToCreate), true)
 	if (!error) {
 		tableData.value.push(data.data)
 		isCreateDialogVisible.value = false
