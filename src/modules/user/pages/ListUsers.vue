@@ -185,6 +185,7 @@ async function getAllUsers() {
 		tableData.value = data.data
 		isLoadingUsers.value = false
 	}
+	isLoadingUsers.value = false
 }
 
 async function getAllRoles() {

@@ -4,7 +4,8 @@
       <el-text class="mx-1 title" size="large">TarotKai</el-text>
     </el-menu-item>
     <el-menu-item>
-      <el-text class="mx-1" size="large">Luffy</el-text>
+      <el-text class="mx-1" size="large">{{ user.name.split(' ')[0] + ' ' + (user.name.split(' ')[1] ?? '') }} <b>({{
+        user.extension }})</b></el-text>
     </el-menu-item>
     <el-sub-menu index="2">
       <template #title>
@@ -18,9 +19,12 @@
 
 <script lang="ts" setup>
 import { ref, reactive, toRefs } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useAuth } from '../../modules/auth/store/auth.store'
 import { useRouter } from 'vue-router'
 
+const authStore = useAuth()
+const { user } = storeToRefs(authStore)
 const activeIndex = ref('1')
 const { logout } = useAuth()
 const router = useRouter()
@@ -30,7 +34,8 @@ const state = reactive({
 })
 const { fit, url } = toRefs(state)
 
-async function logoutHandle(){
+
+async function logoutHandle() {
   await logout()
   router.push({ name: "login" })
 }

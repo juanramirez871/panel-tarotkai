@@ -168,6 +168,7 @@ async function getTypesCalls() {
 		tableData.value = data.data
 		isLoadingTypeCalls.value = false
 	}
+	isLoadingTypeCalls.value = false
 }
 
 async function getTypeCall(id: number) {
