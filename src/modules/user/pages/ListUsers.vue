@@ -37,10 +37,10 @@
 					:suffix-icon="Search" />
 			</template>
 			<template #default="scope">
-				<el-button size="small" @click="handleEdit(scope.$index, scope.row)">
+				<el-button size="large" @click="handleEdit(scope.$index, scope.row)">
 					Editar
 				</el-button>
-				<el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">
+				<el-button size="large" type="danger" @click="handleDelete(scope.$index, scope.row)">
 					Eliminar
 				</el-button>
 			</template>
