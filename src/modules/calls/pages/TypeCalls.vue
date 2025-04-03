@@ -20,14 +20,6 @@
 		<el-table-column label="Nombre" prop="name" />
 		<el-table-column label="Descripcion" prop="description" />
 		<el-table-column label="Tiempo gratis" prop="freeTime" />
-		<el-table-column prop="timeActive" label="Activo" width="150" filter-placement="bottom-end">
-			<template #default="scope">
-				<el-tag type="success" style="margin: 3px;" v-for="timeActive in scope.row.timesActive"
-					disable-transitions>{{
-						timeActive
-					}}</el-tag>
-			</template>
-		</el-table-column>
 		<el-table-column align="right">
 			<template #header>
 				<el-input v-model="search" style="width: 240px" size="large" placeholder="Buscar..."
@@ -56,8 +48,9 @@
 		</template>
 	</el-dialog>
 
-	<el-dialog v-model="dialogFormVisible" title="Crear Tipo de Llamada" width="800">
-		<el-form :model="form">
+	<el-dialog v-model="dialogFormVisible" title="Crear Tipo de Llamada" width="800" custom-class="custom-dialog"
+		center>
+		<el-form :model="form" class="custom-form">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
 				<el-input v-model="form.name" autocomplete="off" />
 			</el-form-item>
@@ -66,11 +59,6 @@
 			</el-form-item>
 			<el-form-item label="Tiempo Gratis" :label-width="formLabelWidth">
 				<el-input v-model="form.name" placeholder="Minutos" type="number" autocomplete="off" />
-			</el-form-item>
-			<el-form-item label="Activo" :label-width="formLabelWidth">
-				<el-select v-model="form.active" multiple placeholder="">
-					<el-option v-for="item, i in form.options" :key="i" :label="item" :value="item" />
-				</el-select>
 			</el-form-item>
 		</el-form>
 		<template #footer>
@@ -83,8 +71,9 @@
 		</template>
 	</el-dialog>
 
-	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar Tipo de Llamada" width="800">
-		<el-form :model="form">
+	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar Tipo de Llamada" width="800"
+		custom-class="custom-dialog" center>
+		<el-form :model="form" class="custom-form">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
 				<el-input v-model="form.name" autocomplete="off" />
 			</el-form-item>
@@ -93,11 +82,6 @@
 			</el-form-item>
 			<el-form-item label="Tiempo Gratis" :label-width="formLabelWidth">
 				<el-input v-model="form.name" placeholder="Minutos" type="number" autocomplete="off" />
-			</el-form-item>
-			<el-form-item label="Activo" :label-width="formLabelWidth">
-				<el-select v-model="form.active" multiple placeholder="">
-					<el-option v-for="item, i in form.options" :key="i" :label="item" :value="item" />
-				</el-select>
 			</el-form-item>
 		</el-form>
 		<template #footer>
