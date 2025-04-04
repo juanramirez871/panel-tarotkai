@@ -9,19 +9,28 @@
 	</el-button>
 	<br />
 	<br />
-	<el-table :data="filterTableData" style="width: 100%" :header-cell-style="{
-		backgroundColor: '#89b3fd1c',
-		color: '#303133c9',
-		textAlign: 'center'
-	}" :cell-style="{
-		textAlign: 'center'
-	}">
+	<el-table v-loading="isLoadingCustomers" empty-text="No hay datos" :data="filterTableData" style="width: 100%"
+		:header-cell-style="{
+			backgroundColor: '#89b3fd1c',
+			color: '#303133c9',
+			textAlign: 'center'
+		}" :cell-style="{
+			textAlign: 'center'
+		}">
 		<el-table-column label="Id" prop="id" />
 		<el-table-column label="Nombre" prop="name" />
-		<el-table-column label="llamadas" prop="rol" />
-		<el-table-column label="Pais" prop="address" />
-		<el-table-column label="Ciudad" prop="createdAt" />
-		<el-table-column label="Ultima Llamada" prop="lastestCall" />
+		<el-table-column label="llamadas" prop="calls">
+			<template #default="scope">
+				Pendiente
+			</template>
+		</el-table-column>
+		<el-table-column label="Pais" prop="country" />
+		<el-table-column label="Ciudad" prop="city" />
+		<el-table-column label="Ultima Llamada" prop="lastCall">
+			<template #default="scope">
+				Pendiente
+			</template>
+		</el-table-column>
 		<el-table-column align="right">
 			<template #header>
 				<el-input v-model="search" style="width: 240px" size="large" placeholder="Buscar..."
@@ -50,8 +59,8 @@
 		</template>
 	</el-dialog>
 
-	<el-dialog v-model="dialogFormVisible" title="Crear Cliente" width="800">
-		<el-form :model="form">
+	<el-dialog v-model="dialogFormVisible" title="Crear Cliente" width="800" custom-class="custom-dialog" center>
+		<el-form :model="form" class="custom-form" label-position="top">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
 				<el-input v-model="form.name" autocomplete="off" />
 			</el-form-item>
@@ -64,9 +73,6 @@
 			<el-form-item label="Ciudad" :label-width="formLabelWidth">
 				<el-input v-model="form.name" type="text" autocomplete="off" />
 			</el-form-item>
-			<el-form-item label="¿Cliente Nuevo?" :label-width="formLabelWidth">
-				<el-switch v-model="value2" class="ml-2" />
-			</el-form-item>
 		</el-form>
 		<template #footer>
 			<div class="dialog-footer">
@@ -78,8 +84,9 @@
 		</template>
 	</el-dialog>
 
-	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar cliente" width="800">
-		<el-form :model="form">
+	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar cliente" width="800" custom-class="custom-dialog"
+		center>
+		<el-form class="custom-form" label-position="top" :model="form">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
 				<el-input v-model="form.name" autocomplete="off" />
 			</el-form-item>
@@ -108,9 +115,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, reactive } from 'vue'
+import { computed, ref, reactive, onBeforeMount } from 'vue'
 import { Search, UserFilled } from '@element-plus/icons-vue'
 import { ElNotification } from 'element-plus'
+import { request } from '../../../shared/service/http.js'
+import * as ServiceCustomer from "../services/customer.js"
 
 const formLabelWidth = '140px'
 const dialogFormVisible = ref(false)
@@ -118,71 +127,45 @@ const centerDialogVisible = ref(false)
 const value2 = ref(true)
 const dialogFormVisibleEditUser = ref(false)
 const search = ref('')
+const isLoadingCustomers = ref(false)
+const tableData = ref([])
 const form = reactive({
 	name: '',
-	region: '',
-	date1: '',
-	date2: '',
-	delivery: false,
-	type: [],
-	resource: '',
-	desc: '',
+	country: '',
+	city: ''
 })
 const filterTableData = computed(() =>
-	tableData.filter(
+	tableData.value.filter(
 		(data) =>
 			!search.value ||
 			data.name.toLowerCase().includes(search.value.toLowerCase())
 	)
 )
+
+onBeforeMount(async () => {
+	await getCustomers()
+})
+
+const getCustomers = async () => {
+
+	isLoadingCustomers.value = true
+	const { data, error } = await request(() => ServiceCustomer.getCustomers(), false)
+	if (!error) {
+		tableData.value = data.data
+		isLoadingCustomers.value = false
+	}
+	isLoadingCustomers.value = false
+}
+
 const handleEdit = (index: number, row) => {
 	console.log(index, row)
 	dialogFormVisibleEditUser.value = true
 }
+
 const handleDelete = (index: number, row) => {
 	console.log(index, row)
 	centerDialogVisible.value = true
 }
-
-const tableData = [
-	{
-		createdAt: 'San Juan',
-		name: 'Tom',
-		address: 'Puerto Rico',
-		extencion: "1096065071",
-		rol: "84",
-		id: 1,
-		lastestCall: "02-03-2025"
-	},
-	{
-		createdAt: 'San Juan',
-		name: 'John',
-		address: 'Puerto Rico',
-		extencion: "1096065071",
-		rol: "84",
-		id: 1,
-		lastestCall: "02-03-2025"
-	},
-	{
-		createdAt: 'San Juan',
-		name: 'Morgan',
-		address: 'Puerto Rico',
-		extencion: "1096065071",
-		rol: "84",
-		id: 1,
-		lastestCall: "02-03-2025"
-	},
-	{
-		createdAt: 'San Juan',
-		name: 'Jessy',
-		address: 'Puerto Rico',
-		extencion: "1096065071",
-		rol: "84",
-		id: 1,
-		lastestCall: "02-03-2025"
-	},
-]
-
 
 const handleConfirm = () => {
 	alert("Se elimino correctamente el cliente")

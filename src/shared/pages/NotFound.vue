@@ -9,6 +9,7 @@
             <h1>
                 404 Not Found
             </h1>
+            <h3>TarotKai</h3>
             <p>No se encontro la ruta que estas buscando</p>
             <router-link :to="{ name: 'home' }"><el-button type="primary" size="large">Ir al
                     inicio</el-button></router-link>

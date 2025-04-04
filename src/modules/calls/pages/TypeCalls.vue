@@ -55,7 +55,7 @@
 
 	<el-dialog v-model="isCreateDialogVisible" title="Crear Tipo de Llamada" width="800" custom-class="custom-dialog"
 		center>
-		<el-form :model="formToCreate" class="custom-form">
+		<el-form label-position="top" :model="formToCreate" class="custom-form">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
 				<el-input v-model="formToCreate.name" autocomplete="off" />
 			</el-form-item>
@@ -78,7 +78,7 @@
 
 	<el-dialog v-model="isEditDialogVisible" title="Editar Tipo de Llamada" width="800" custom-class="custom-dialog"
 		center>
-		<el-form :model="form" class="custom-form">
+		<el-form :model="form" label-position="top" class="custom-form">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
 				<el-input v-model="form.name" autocomplete="off" />
 			</el-form-item>

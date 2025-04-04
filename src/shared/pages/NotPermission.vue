@@ -9,6 +9,7 @@
             <h1>
                 Permiso denegado
             </h1>
+            <h3>TarotKai</h3>
             <p>No tienes permisos para acceder a ese recurso</p>
             <router-link :to="{ name: 'home' }"><el-button type="primary" size="large">Ir al
                     inicio</el-button></router-link>
