@@ -8,10 +8,10 @@ export const useModules = defineStore('modules', {
     }),
 
     actions: {
-        setmodules(modules) {
+        setModules(modules) {
             this.modules = modules
         },
-        
+
         async getModules() {
             try {
                 const { data, error } = await request(() => moduleService.getAllModulesAvailable())

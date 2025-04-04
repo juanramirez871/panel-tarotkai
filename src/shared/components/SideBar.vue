@@ -8,99 +8,61 @@
       </el-radio-group>
     </el-menu-item>
 
-    <router-link :to="{ name: 'calls' }">
-      <el-menu-item index="1">
-        <el-icon>
-          <Phone style="color: black;" />
-        </el-icon>
-        <span>Llamadas</span>
-      </el-menu-item>
-    </router-link>
+    <div v-for="el in modules">
 
-    <router-link :to="{ name: 'customers' }">
-      <el-menu-item index="2">
-        <el-icon>
-          <User style="color: black;" />
-        </el-icon>
-        <span>Clientes</span>
-      </el-menu-item>
-    </router-link>
+      <router-link v-if="el.submodules.length == 1" :to="{ name: el.route }">
+        <el-menu-item :index="el.module_id">
+          <el-icon>
+            <component :is="getIconComponent(el.icon)" />
+          </el-icon>
+          <span>{{ el.name.split("_").join(" ") }}</span>
+        </el-menu-item>
+      </router-link>
 
-    <router-link :to="{ name: 'reservations' }">
-      <el-menu-item index="3">
-        <el-icon>
-          <MessageBox style="color: black;" />
-        </el-icon>
-        <span>Reservas</span>
-      </el-menu-item>
-    </router-link>
+      <el-sub-menu v-else :index="el.module_id">
 
-    <router-link :to="{ name: 'metrics' }">
-      <el-menu-item index="4">
-        <el-icon>
-          <Histogram style="color: black;" />
-        </el-icon>
-        <span>Metricas</span>
-      </el-menu-item>
-    </router-link>
+        <template #title>
+          <el-icon>
+            <component :is="getIconComponent(el.icon)" />
+          </el-icon>
+          <span>{{ el.name.split("_").join(" ") }}</span>
+        </template>
 
-    <router-link :to="{ name: 'goals' }">
-      <el-menu-item index="5">
-        <el-icon>
-          <Star style="color: black;" />
-        </el-icon>
-        <span>Metas</span>
-      </el-menu-item>
-    </router-link>
+        <el-menu-item-group v-for="subModule in el.submodules">
+          <router-link :to="{ name: subModule.route }">
+            <el-menu-item :index="el.module_id + '-' + subModule.id">
+              <el-icon>
+                <component :is="getIconComponent(subModule.icon)" />
+              </el-icon>
+              <span>{{ subModule.name.split("_").slice(1).join(" ") }}</span>
+            </el-menu-item>
+          </router-link>
+        </el-menu-item-group>
 
-    <router-link :to="{ name: 'reports' }">
-      <el-menu-item index="6">
-        <el-icon>
-          <Document style="color: black;" />
-        </el-icon>
-        <span>Reportes</span>
-      </el-menu-item>
-    </router-link>
+      </el-sub-menu>
+    </div>
 
-    <el-sub-menu index="7">
-      <template #title>
-        <el-icon>
-          <setting />
-        </el-icon>
-        <span>Configuración</span>
-      </template>
-      <el-menu-item-group>
-        <router-link :to="{ name: 'users' }"><el-menu-item index="7-1">Usuarios</el-menu-item></router-link>
-        <router-link :to="{ name: 'privileges' }"><el-menu-item index="7-2">Permisos</el-menu-item></router-link>
-        <router-link :to="{ name: 'type-calls' }"><el-menu-item index="7-3">Tipo de
-            llamadas</el-menu-item></router-link>
-      </el-menu-item-group>
-    </el-sub-menu>
   </el-menu>
 </template>
 
 <script lang="ts" setup>
-import {
-  Setting,
-  User,
-  Phone,
-  MessageBox,
-  Star,
-  Histogram,
-  Document
-} from '@element-plus/icons-vue'
 import { ref, onBeforeMount } from 'vue';
 import { storeToRefs } from 'pinia'
 import { useModules } from '../store/modules.js'
+import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
 const isCollapse = ref(false)
 const modulesStore = useModules()
 const { modules } = storeToRefs(modulesStore)
 
-console.log(modules.value);
 onBeforeMount(async () => {
   await modulesStore.getModules()
+  console.log(modules.value);
 })
+
+const getIconComponent = (iconName) => {
+  return ElementPlusIconsVue[iconName] || ElementPlusIconsVue.QuestionFilled;
+};
 
 </script>
 
