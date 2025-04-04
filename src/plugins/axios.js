@@ -1,5 +1,5 @@
 import axios from 'axios';
-import router from '../shared/routes/index';
+import { router } from '../shared/routes/index';
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 axios.defaults.withCredentials = false;

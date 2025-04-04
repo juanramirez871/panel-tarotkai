@@ -4,8 +4,8 @@
       <el-text class="mx-1 title" size="large">TarotKai</el-text>
     </el-menu-item>
     <el-menu-item>
-      <el-text class="mx-1" size="large">{{ user.name.split(' ')[0] + ' ' + (user.name.split(' ')[1] ?? '') }} <b>({{
-        user.extension }})</b></el-text>
+      <el-text class="mx-1" size="large">{{ user?.name.split(' ')[0] + ' ' + (user?.name.split(' ')[1] ?? '') }} <b>({{
+        user?.extension }})</b></el-text>
     </el-menu-item>
     <el-sub-menu index="2">
       <template #title>

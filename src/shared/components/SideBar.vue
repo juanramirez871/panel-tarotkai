@@ -57,7 +57,6 @@ const { modules } = storeToRefs(modulesStore)
 
 onBeforeMount(async () => {
   await modulesStore.getModules()
-  console.log(modules.value);
 })
 
 const getIconComponent = (iconName) => {

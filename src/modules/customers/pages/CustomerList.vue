@@ -18,7 +18,6 @@
 	}">
 		<el-table-column label="Id" prop="id" />
 		<el-table-column label="Nombre" prop="name" />
-		<el-table-column label="Identificacion" prop="extencion" />
 		<el-table-column label="llamadas" prop="rol" />
 		<el-table-column label="Pais" prop="address" />
 		<el-table-column label="Ciudad" prop="createdAt" />
