@@ -89,9 +89,18 @@ import {
   Histogram,
   Document
 } from '@element-plus/icons-vue'
-import { ref } from 'vue'
+import { ref, onBeforeMount } from 'vue';
+import { storeToRefs } from 'pinia'
+import { useModules } from '../store/modules.js'
 
 const isCollapse = ref(false)
+const modulesStore = useModules()
+const { modules } = storeToRefs(modulesStore)
+
+console.log(modules.value);
+onBeforeMount(async () => {
+  await modulesStore.getModules()
+})
 
 </script>
 

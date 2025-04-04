@@ -7,3 +7,7 @@ export function getModules(idRole) {
 export function changePrivilegeRole(idRole, idPrivilege) {
     return axios.put(`permission/roles/${idRole}/privilege/${idPrivilege}`)
 }
+
+export function getAllModulesAvailable() {
+    return axios.get(`permission/modules`)
+}
