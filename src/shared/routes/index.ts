@@ -16,9 +16,22 @@ export function createAppRouter() {
 		const modulesStore = useModules();
 		const { modules } = storeToRefs(modulesStore);
 
-		console.log(to.name);
-		console.log(modules.value);
+		if (!modules.value || modules.value.length == 0) {
+			await modulesStore.getModules()
+		}
 
+		let hasPermissionRoute = false
+		modules.value.forEach((el) => {
+			if (el.route == to.name) hasPermissionRoute = true
+			if (to.name == "not_permission" || to.name == "not_found" || to.name == "home") hasPermissionRoute = true
+			if (el.submodules.length > 1) {
+				el.submodules.forEach((subModule) => {
+					if (subModule.route == to.name) hasPermissionRoute = true
+				})
+			}
+		})
+
+		if (!hasPermissionRoute) return { name: "not_permission" }
 		const middleware = to?.meta?.middleware;
 		const isCallableMiddleware = typeof middleware === 'function';
 

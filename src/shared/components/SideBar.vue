@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onBeforeMount } from 'vue';
+import { ref } from 'vue';
 import { storeToRefs } from 'pinia'
 import { useModules } from '../store/modules.js'
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
@@ -54,10 +54,6 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 const isCollapse = ref(false)
 const modulesStore = useModules()
 const { modules } = storeToRefs(modulesStore)
-
-onBeforeMount(async () => {
-  await modulesStore.getModules()
-})
 
 const getIconComponent = (iconName) => {
   return ElementPlusIconsVue[iconName] || ElementPlusIconsVue.QuestionFilled;

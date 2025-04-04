@@ -11,8 +11,14 @@ import Reports from '../../modules/reports/routes'
 export default [
 	{
 		path: '/:pathMatch(.*)',
+		name: "not_found",
 		component: () => import('../pages/NotFound.vue'),
 		meta: { name: 'Not Found' },
+	},
+	{
+		path: '/no-permission',
+		name: "not_permission",
+		component: () => import('../pages/NotPermission.vue'),
 	},
 	{
 		path: '/',
