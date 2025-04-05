@@ -21,7 +21,7 @@
 		<el-table-column label="Nombre" prop="name" />
 		<el-table-column label="llamadas" prop="calls">
 			<template #default="scope">
-				Pendiente
+				{{ scope.row.calls ?? 0 }}
 			</template>
 		</el-table-column>
 		<el-table-column label="Pais" prop="country" />
@@ -108,7 +108,6 @@
 <script lang="ts" setup>
 import { computed, ref, reactive, onBeforeMount } from 'vue'
 import { Search, UserFilled } from '@element-plus/icons-vue'
-import { ElNotification } from 'element-plus'
 import { request } from '../../../shared/service/http.js'
 import * as ServiceCustomer from "../services/customer.js"
 
@@ -119,6 +118,8 @@ const dialogFormVisibleEditUser = ref(false)
 const search = ref('')
 const isLoadingCustomers = ref(false)
 const tableData = ref([])
+const customerToDelete = ref(0)
+const customerToEdit = ref(0)
 const formCreate = reactive({
 	name: '',
 	country: '',
@@ -158,21 +159,46 @@ const createCustomers = async () => {
 	if (!error) {
 		tableData.value.unshift(data.data)
 		dialogFormVisible.value = false
+		formCreate["name"] = ""
+		formCreate["country"] = ""
+		formCreate["city"] = ""
 	}
 }
 
-const handleEdit = (index: number, row) => {
-	console.log(index, row)
+const editCustomers = async (id: number) => {
+
+	const { data, error } = await request(() => ServiceCustomer.editCustomers(id, formEdit), true)
+	if (!error) {
+		const index = tableData.value.findIndex((el) => el.id == id);
+		tableData.value = tableData.value.filter((el) => el.id != id);
+		if (index !== -1) tableData.value.splice(index, 0, data.data);
+		dialogFormVisibleEditUser.value = false
+		formEdit["name"] = ""
+		formEdit["country"] = ""
+		formEdit["city"] = ""
+	}
+}
+
+const deleteCustomers = async (id: number) => {
+
+	const data = await request(() => ServiceCustomer.deleteCustomers(id), true)
+	if (!data.error) {
+		tableData.value = tableData.value.filter((el) => el.id != id)
+	}
+}
+
+const handleEdit = (_index: number, row) => {
+	customerToEdit.value = row.id
 	dialogFormVisibleEditUser.value = true
 }
 
-const handleDelete = (index: number, row) => {
-	console.log(index, row)
+const handleDelete = (_index: number, row) => {
+	customerToDelete.value = row.id
 	centerDialogVisible.value = true
 }
 
-const handleConfirm = () => {
-	alert("Se elimino correctamente el cliente")
+const handleConfirm = async () => {
+	await deleteCustomers(customerToDelete.value)
 	centerDialogVisible.value = false
 }
 
@@ -180,16 +206,8 @@ const handleConfirmCreateUser = async () => {
 	await createCustomers()
 }
 
-const handleConfirmEditUser = () => {
-	alert("Se edito el cliente correctamente")
-	dialogFormVisibleEditUser.value = false
+const handleConfirmEditUser = async () => {
+	await editCustomers(customerToEdit.value)
 }
 
-const alert = (message) => {
-	ElNotification.success({
-		title: 'Exitosamente',
-		message: message,
-		offset: 10,
-	})
-}
 </script>
