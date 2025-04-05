@@ -153,9 +153,19 @@ const getCustomers = async () => {
 	isLoadingCustomers.value = false
 }
 
-const createCustomers = async () => {
+const getCustomer = async () => {
 
-	const { data, error } = await request(() => ServiceCustomer.createCustomers(formCreate), true)
+	const { data, error } = await request(() => ServiceCustomer.getCustomer(customerToEdit.value), false)
+	if (!error) {
+		formEdit["name"] = data.data.name
+		formEdit["country"] = data.data.country
+		formEdit["city"] = data.data.city
+	}
+}
+
+const createCustomer = async () => {
+
+	const { data, error } = await request(() => ServiceCustomer.createCustomer(formCreate), true)
 	if (!error) {
 		tableData.value.unshift(data.data)
 		dialogFormVisible.value = false
@@ -165,9 +175,9 @@ const createCustomers = async () => {
 	}
 }
 
-const editCustomers = async (id: number) => {
+const editCustomer = async (id: number) => {
 
-	const { data, error } = await request(() => ServiceCustomer.editCustomers(id, formEdit), true)
+	const { data, error } = await request(() => ServiceCustomer.editCustomer(id, formEdit), true)
 	if (!error) {
 		const index = tableData.value.findIndex((el) => el.id == id);
 		tableData.value = tableData.value.filter((el) => el.id != id);
@@ -179,16 +189,17 @@ const editCustomers = async (id: number) => {
 	}
 }
 
-const deleteCustomers = async (id: number) => {
+const deleteCustomer = async (id: number) => {
 
-	const data = await request(() => ServiceCustomer.deleteCustomers(id), true)
+	const data = await request(() => ServiceCustomer.deleteCustomer(id), true)
 	if (!data.error) {
 		tableData.value = tableData.value.filter((el) => el.id != id)
 	}
 }
 
-const handleEdit = (_index: number, row) => {
+const handleEdit = async (_index: number, row) => {
 	customerToEdit.value = row.id
+	await getCustomer()
 	dialogFormVisibleEditUser.value = true
 }
 
@@ -198,16 +209,16 @@ const handleDelete = (_index: number, row) => {
 }
 
 const handleConfirm = async () => {
-	await deleteCustomers(customerToDelete.value)
+	await deleteCustomer(customerToDelete.value)
 	centerDialogVisible.value = false
 }
 
 const handleConfirmCreateUser = async () => {
-	await createCustomers()
+	await createCustomer()
 }
 
 const handleConfirmEditUser = async () => {
-	await editCustomers(customerToEdit.value)
+	await editCustomer(customerToEdit.value)
 }
 
 </script>

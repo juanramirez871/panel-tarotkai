@@ -4,14 +4,18 @@ export function getCustomers() {
     return axios.get(`customers`)
 }
 
-export function createCustomers(payload) {
+export function createCustomer(payload) {
     return axios.post(`customers`, payload)
 }
 
-export function deleteCustomers(idCustomer) {
+export function deleteCustomer(idCustomer) {
     return axios.delete(`customers/${idCustomer}`)
 }
 
-export function editCustomers(idCustomer, payload) {
+export function editCustomer(idCustomer, payload) {
     return axios.put(`customers/${idCustomer}`, payload)
+}
+
+export function getCustomer(idCustomer) {
+    return axios.get(`customers/${idCustomer}`)
 }
