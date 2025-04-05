@@ -16,26 +16,26 @@
 	<div style="display: flex; gap: 20px">
 		<div>
 			<p>Tarotistas </p>
-			<el-select multiple filterable v-model="filterRange" placeholder="Select" size="large" style="width: 240px">
+			<el-select multiple filterable v-model="filter.tarotista" placeholder="" size="large" style="width: 240px">
 				<el-option v-for="item, i in ['Sofia', 'Anais', 'Rafel']" :key="i" :label="item" :value="i" />
 			</el-select>
 		</div>
 		<div>
 			<p>Centrales </p>
-			<el-select multiple filterable v-model="filterRange" placeholder="Select" size="large" style="width: 240px">
+			<el-select multiple filterable v-model="filter.central" size="large" placeholder="" style="width: 240px">
 				<el-option v-for="item, i in ['Juan', 'Cristian', 'Gabriel']" :key="i" :label="item" :value="i" />
 			</el-select>
 		</div>
 		<div>
 			<p>Estado </p>
-			<el-select multiple filterable v-model="filterRange" placeholder="Select" size="large" style="width: 240px">
+			<el-select multiple filterable v-model="filter.status" size="large" placeholder="" style="width: 240px">
 				<el-option v-for="item, i in ['Terminado', 'En Curso', 'Cancelado']" :key="i" :label="item"
 					:value="i" />
 			</el-select>
 		</div>
 		<div>
 			<p>Fecha</p>
-			<el-date-picker v-model="filterRange" type="daterange" unlink-panels range-separator="A"
+			<el-date-picker v-model="filter.date" type="daterange" unlink-panels range-separator="A"
 				start-placeholder="Fecha inicial" end-placeholder="Fecha Final" size="large" />
 		</div>
 	</div>
@@ -43,34 +43,6 @@
 	<br />
 
 	<div style="display: flex;gap: 20px;">
-		<article class="postcard light blue min-card">
-			<div class="postcard__text t-dark">
-				<div style="display: flex; gap: 10px;align-items: top;">
-					<h1 class="postcard__title yellow">Tarotista Rafael</h1>
-					<p> reservacion <b>#1</b></p>
-				</div>
-				<br />
-				<div>
-					<p>Fecha de creación: <span><b>Martes Junio 2025 11: 05pm</b></span></p>
-					<p>Fecha de reservación: <span><b>Lunes Abril 2025 24: 22pm</b></span></p>
-					<p>Tiempo reservado: <span><b>30 Minutos</b></span></p>
-					<p>Central: <span><b>Gabriel</b></span></p>
-					<p>Estado: <span><b><el-tag type="primary">Terminado</el-tag></b></span></p>
-					<br />
-					<el-button type="info" @click="() => dialogFormVisibleEditReservation = true">
-						Editar<el-icon class="el-icon--right">
-							<Edit />
-						</el-icon>
-					</el-button>
-					<el-button type="danger" @click="() => centerDialogVisible = true">
-						Eliminar<el-icon class="el-icon--right">
-							<CloseBold />
-						</el-icon>
-					</el-button>
-				</div>
-				<br />
-			</div>
-		</article>
 		<article class="postcard light blue min-card">
 			<div class="postcard__text t-dark">
 				<div style="display: flex; gap: 10px;align-items: top;">
@@ -181,9 +153,10 @@ import { reactive, ref } from 'vue';
 import { ElNotification } from 'element-plus'
 
 const formLabelWidth = '140px'
-const filterRange = ref(1)
 const dialogFormVisibleEditReservation = ref(false)
 const dialogFormVisibleCreateReservation = ref(false)
+const today = new Date()
+const lastMonth = new Date()
 const form = reactive({
 	name: '',
 	region: '',
@@ -193,6 +166,12 @@ const form = reactive({
 	type: [],
 	resource: '',
 	desc: '',
+})
+const filter = ref({
+	tarotista: null,
+	central: null,
+	status: null,
+	date: [lastMonth.setMonth(today.getMonth() - 1), today]
 })
 const centerDialogVisible = ref(false)
 const valueDatePicker = ref('')
@@ -225,6 +204,11 @@ const alert = (message) => {
 	min-width: 500px;
 }
 
+span {
+	color: rgb(51.2, 126.4, 204);
+	font-weight: lighter;
+}
+
 a,
 a:hover {
 	text-decoration: none;
@@ -248,10 +232,15 @@ a:hover {
 	overflow: hidden;
 	position: relative;
 	color: #ffffff;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
 
+	&:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 6px 25px -10px rgba(0, 0, 0, 0.7);
+	}
 
 	&.light {
-		background-color: #e9f3ff73;
+		background-color: #f6f9fc81;
 	}
 
 	.t-dark {
