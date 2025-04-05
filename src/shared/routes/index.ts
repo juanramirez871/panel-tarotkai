@@ -13,31 +13,43 @@ export const router = createRouter({
 export function createAppRouter() {
 
 	router.beforeEach(async (to, from) => {
-		const modulesStore = useModules();
-		const { modules } = storeToRefs(modulesStore);
 
-		if (!modules.value || modules.value.length == 0) {
-			await modulesStore.getModules()
-		}
-
-		let hasPermissionRoute = false
-		modules.value.forEach((el) => {
-			if (el.route == to.name) hasPermissionRoute = true
-			if (to.name == "not_permission" || to.name == "not_found" || to.name == "home") hasPermissionRoute = true
-			if (el.submodules.length > 1) {
-				el.submodules.forEach((subModule) => {
-					if (subModule.route == to.name) hasPermissionRoute = true
-				})
-			}
-		})
-
-		if (!hasPermissionRoute) return { name: "not_permission" }
 		const middleware = to?.meta?.middleware;
 		const isCallableMiddleware = typeof middleware === 'function';
+		let isAuth = false
 
-		if (to.name !== 'login') return await auth(to, from);
+		if (to.name !== 'login') isAuth = await auth(to, from);
 		if (to.name === 'login') return await login(to, from);
 		if (isCallableMiddleware) return await middleware(to, from);
+
+
+		if (isAuth === true) {
+			const modulesStore = useModules();
+			const { modules } = storeToRefs(modulesStore);
+
+			if (!modules.value || modules.value.length == 0) await modulesStore.getModules()
+			let hasPermissionRoute = false
+
+			modules.value.forEach((el) => {
+				if (el.route == to.name) hasPermissionRoute = true
+				if (
+					to.name == "not_permission" ||
+					to.name == "not_found" ||
+					to.name == "home" ||
+					to.name == "login" ||
+					to.name == "logout"
+				) hasPermissionRoute = true
+
+				if (el.submodules.length > 1) {
+					el.submodules.forEach((subModule) => {
+						if (subModule.route == to.name) hasPermissionRoute = true
+					})
+				}
+			})
+
+			if (!hasPermissionRoute) return { name: "not_permission" }
+		}
+		else return { name: "login" }
 
 		return true;
 	});
