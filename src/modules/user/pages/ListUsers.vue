@@ -10,8 +10,6 @@
 	<br />
 	<br />
 
-
-
 	<el-table v-loading="isLoadingUsers" empty-text="No hay datos" :data="filterTableData" style="width: 100%"
 		:header-cell-style="{
 			backgroundColor: '#89b3fd1c',
@@ -31,6 +29,11 @@
 		<el-table-column label="Correo" prop="email" />
 		<el-table-column label="Extensión" prop="extension" />
 		<el-table-column label="Rol" prop="roleName" />
+		<el-table-column label="Trabajo" prop="typeWork">
+			<template #default="scope">
+				{{ showTypeWork(scope.row?.typeWork) }}
+			</template>
+		</el-table-column>
 		<el-table-column align="right">
 			<template #header>
 				<el-input v-model="search" style="width: 240px" size="large" placeholder="Buscar..."
@@ -70,6 +73,21 @@
 					<el-option v-for="role in selectRoles" :label="role.name" :key="role.id" :value="role.id" />
 				</el-select>
 			</el-form-item>
+			<el-form-item label="Tipo de trabajo">
+				<el-select placeholder="" v-model="formCreate.typeWork">
+					<el-option v-for="type, i in typesWork" :label="type" :key="i" :value="i + 1" />
+				</el-select>
+			</el-form-item>
+			<el-form-item label="Horario">
+				<div style="width: 100% !important;">
+					<el-segmented v-model="dayOfWeek" :options="optionsDays" block />
+					<br>
+					<center>
+						<el-time-picker v-model="date" is-range range-separator="A" start-placeholder="Comienzo"
+							end-placeholder="Final" />
+					</center>
+				</div>
+			</el-form-item>
 			<el-form-item label="Extensión">
 				<el-input v-model="formCreate.extent" type="number" autocomplete="off" />
 			</el-form-item>
@@ -92,13 +110,18 @@
 
 	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar Usuario" width="800" center
 		custom-class="custom-dialog">
-		<el-form :model="formEdit" class="custom-form">
+		<el-form :model="formEdit" class="custom-form" label-position="top">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
 				<el-input v-model="formEdit.name" autocomplete="off" />
 			</el-form-item>
 			<el-form-item label="Rol" :label-width="formLabelWidth">
 				<el-select placeholder="" v-model="formEdit.rolId">
 					<el-option v-for="role in selectRoles" :label="role.name" :key="role.id" :value="role.id" />
+				</el-select>
+			</el-form-item>
+			<el-form-item label="Tipo de trabajo">
+				<el-select placeholder="" v-model="formEdit.typeWork">
+					<el-option v-for="type, i in typesWork" :label="type" :key="i" :value="i + 1" />
 				</el-select>
 			</el-form-item>
 			<el-form-item label="Extensión" :label-width="formLabelWidth">
@@ -138,14 +161,28 @@ const idUserToDelete = ref(null)
 const idUserToEdit = ref(null)
 const search = ref('')
 const selectRoles = ref([])
+const typesWork = ["Central", "Tarotista", "Otro"]
 const isLoadingUsers = ref(false)
+const dayOfWeek = ref('Mon')
 const tableData = ref([])
+const date = ref()
+const optionsDays = [
+	'Lun',
+	'Mar',
+	'Mie',
+	'Jue',
+	'Vie',
+	'Sab',
+	'Dom',
+]
+
 const formEdit = ref({
 	name: '',
 	email: '',
 	rolId: '',
 	extent: '',
 	password: null,
+	typeWork: null
 })
 let formCreate = ref({
 	name: '',
@@ -153,6 +190,7 @@ let formCreate = ref({
 	rolId: '',
 	extent: '',
 	password: '',
+	typeWork: null
 })
 
 onBeforeMount(async () => {
@@ -210,6 +248,7 @@ async function getUser(id: number) {
 			email: data.data.email,
 			rolId: data.data.role_id,
 			extent: data.data.extension,
+			typeWork: data.data.typeWork,
 			password: null,
 		}
 	}
@@ -227,6 +266,7 @@ async function editUser(id: number) {
 			email: '',
 			rolId: '',
 			extent: '',
+			typeWork: null,
 			password: '',
 		}
 		dialogFormVisibleEditUser.value = false
@@ -243,6 +283,7 @@ async function createUser() {
 			email: '',
 			rolId: '',
 			extent: '',
+			typeWork: null,
 			password: '',
 		}
 	}
@@ -255,6 +296,12 @@ const handleConfirmDelete = () => {
 
 const handleConfirmEditUser = () => {
 	editUser(idUserToEdit.value)
+}
+
+const showTypeWork = (typeWork: number) => {
+	if (typeWork == 1) return "Central"
+	if (typeWork == 2) return "Tarotista"
+	if (typeWork == 3) return "Otro"
 }
 
 </script>
