@@ -60,18 +60,15 @@
 	</el-dialog>
 
 	<el-dialog v-model="dialogFormVisible" title="Crear Cliente" width="800" custom-class="custom-dialog" center>
-		<el-form :model="form" class="custom-form" label-position="top">
+		<el-form :model="formCreate" class="custom-form" label-position="top">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
-				<el-input v-model="form.name" autocomplete="off" />
-			</el-form-item>
-			<el-form-item label="Identificacion" :label-width="formLabelWidth">
-				<el-input v-model="form.name" type="number" autocomplete="off" />
+				<el-input v-model="formCreate.name" autocomplete="off" />
 			</el-form-item>
 			<el-form-item label="Pais" :label-width="formLabelWidth">
-				<el-input v-model="form.name" type="text" autocomplete="off" />
+				<el-input v-model="formCreate.country" type="text" autocomplete="off" />
 			</el-form-item>
 			<el-form-item label="Ciudad" :label-width="formLabelWidth">
-				<el-input v-model="form.name" type="text" autocomplete="off" />
+				<el-input v-model="formCreate.city" type="text" autocomplete="off" />
 			</el-form-item>
 		</el-form>
 		<template #footer>
@@ -86,21 +83,15 @@
 
 	<el-dialog v-model="dialogFormVisibleEditUser" title="Editar cliente" width="800" custom-class="custom-dialog"
 		center>
-		<el-form class="custom-form" label-position="top" :model="form">
+		<el-form class="custom-form" label-position="top" :model="formEdit">
 			<el-form-item label="Nombre" :label-width="formLabelWidth">
-				<el-input v-model="form.name" autocomplete="off" />
-			</el-form-item>
-			<el-form-item label="Identificacion" :label-width="formLabelWidth">
-				<el-input v-model="form.name" type="number" autocomplete="off" />
+				<el-input v-model="formEdit.name" autocomplete="off" />
 			</el-form-item>
 			<el-form-item label="Pais" :label-width="formLabelWidth">
-				<el-input v-model="form.name" type="text" autocomplete="off" />
+				<el-input v-model="formEdit.country" type="text" autocomplete="off" />
 			</el-form-item>
 			<el-form-item label="Ciudad" :label-width="formLabelWidth">
-				<el-input v-model="form.name" type="text" autocomplete="off" />
-			</el-form-item>
-			<el-form-item label="¿Cliente Nuevo?" :label-width="formLabelWidth">
-				<el-switch v-model="value2" class="ml-2" />
+				<el-input v-model="formEdit.city" type="text" autocomplete="off" />
 			</el-form-item>
 		</el-form>
 		<template #footer>
@@ -124,12 +115,16 @@ import * as ServiceCustomer from "../services/customer.js"
 const formLabelWidth = '140px'
 const dialogFormVisible = ref(false)
 const centerDialogVisible = ref(false)
-const value2 = ref(true)
 const dialogFormVisibleEditUser = ref(false)
 const search = ref('')
 const isLoadingCustomers = ref(false)
 const tableData = ref([])
-const form = reactive({
+const formCreate = reactive({
+	name: '',
+	country: '',
+	city: ''
+})
+const formEdit = reactive({
 	name: '',
 	country: '',
 	city: ''
@@ -157,6 +152,15 @@ const getCustomers = async () => {
 	isLoadingCustomers.value = false
 }
 
+const createCustomers = async () => {
+
+	const { data, error } = await request(() => ServiceCustomer.createCustomers(formCreate), true)
+	if (!error) {
+		tableData.value.unshift(data.data)
+		dialogFormVisible.value = false
+	}
+}
+
 const handleEdit = (index: number, row) => {
 	console.log(index, row)
 	dialogFormVisibleEditUser.value = true
@@ -172,9 +176,8 @@ const handleConfirm = () => {
 	centerDialogVisible.value = false
 }
 
-const handleConfirmCreateUser = () => {
-	alert("Se creo el cliente correctamente")
-	dialogFormVisible.value = false
+const handleConfirmCreateUser = async () => {
+	await createCustomers()
 }
 
 const handleConfirmEditUser = () => {
